@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/public/login.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/public/login.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>acessoNegado</from-outcome>
+			<to-view-id>/public/acessoNegado.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>contato</from-outcome>
+			<to-view-id>/public/contato.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>instrucoes</from-outcome>
+			<to-view-id>/public/instrucoes.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cadastroUsuarioPublico</from-outcome>
+			<to-view-id>/public/usuario.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+		<navigation-case>
+			<from-outcome>reserva</from-outcome>
+			<to-view-id>/protected/user/cadastros/reserva.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>checkin</from-outcome>
+			<to-view-id>/protected/user/cadastros/checkin.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioOcupacoesUsuario</from-outcome>
+			<to-view-id>/protected/user/relatorios/relOcupacoesUsuario.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioReservasUsuario</from-outcome>
+			<to-view-id>/protected/user/relatorios/relReservasUsuario.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+
+
+		<navigation-case>
+			<from-outcome>cadastroUsuario</from-outcome>
+			<to-view-id>/protected/admin/cadastros/usuario.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cadastroCategoriaQuarto</from-outcome>
+			<to-view-id>/protected/admin/cadastros/categoriaQuarto.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cadastroQuarto</from-outcome>
+			<to-view-id>/protected/admin/cadastros/quarto.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioReservas</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relReservas.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioReservasAtuais</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relReservasAtuais.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioOcupacoes</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relOcupacoes.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioOcupacoesAtuais</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relOcupacoesAtuais.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioQuartos</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relQuartos.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioCategoriaQuarto</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relCatQuartos.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioUsuarios</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relUsuarios.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioFinancas</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relFinancas.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<lifecycle>
+		<phase-listener>br.com.hotel.util.LogPhaseListener</phase-listener>
+	</lifecycle>
+
+</faces-config>

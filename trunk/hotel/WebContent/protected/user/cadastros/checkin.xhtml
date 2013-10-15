@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="form">
+
+			<p:messages autoUpdate="true" />
+			<p:growl autoUpdate="true" />
+
+			<p:fieldset legend="Dados da Reserva">
+
+				<p:panelGrid columns="2">
+
+					<h:outputLabel value="Data Inicial: " for="dataInicio" />
+					<p:calendar id="dataInicio"
+						value="#{estadiaBean.estadia.dataInicio.time}" required="true"
+						requiredMessage="Data inicial Obrigatória" pattern="dd/MM/yyyy"
+						timeZone="America/Sao_Paulo"
+						validator="#{estadiaBean.validaDataInicio}" />
+
+					<h:outputLabel value="Numero de noites: " />
+					<p:selectOneMenu name="selecaoNoites" id="totalDias"
+						value="#{estadiaBean.numeroDias}">
+						<f:selectItem itemValue="1" itemLabel="1" />
+						<f:selectItem itemValue="2" itemLabel="2" />
+						<f:selectItem itemValue="3" itemLabel="3" />
+						<f:selectItem itemValue="4" itemLabel="4" />
+						<f:selectItem itemValue="5" itemLabel="5" />
+						<f:selectItem itemValue="6" itemLabel="6" />
+						<f:selectItem itemValue="7" itemLabel="7" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="Categoria: " for="categoria" />
+					<p:selectOneMenu name="select" id="categoria"
+						value="#{estadiaBean.categoriaId}">
+						<f:selectItem itemLabel="Selecione..." itemValue="0" />
+						<f:selectItems value="#{estadiaBean.listaCategorias}"
+							var="categoria" itemLabel="#{categoria.categoria}"
+							itemValue="#{categoria.id}" />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="Cama Extra: " for="camaExtra" />
+					<p:selectOneMenu id="camaExtra"
+						value="#{estadiaBean.estadia.camaExtra}">
+						<f:selectItem itemValue="false" itemLabel="Nao" />
+						<f:selectItem itemValue="true" itemLabel="Sim" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+
+				<p:commandButton value="Pesquisar" update="form"
+					actionListener="#{estadiaBean.pesquisarReserva}" />
+			</p:fieldset>
+			<br />
+			<br />
+			<p:fieldset legend="Quartos disponíveis para Reserva">
+				<p:dataTable value="#{estadiaBean.quartos}" var="quarto"
+					paginator="true" rows="10"
+					rendered="#{estadiaBean.renderizarQuartosDisponiveis}">
+					<p:column>
+						<f:facet name="header">Numero do quarto</f:facet>
+						<h:outputText value="#{quarto.numero}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Categoria</f:facet>
+						<h:outputText value="#{quarto.categoria.categoria}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Hospedes</f:facet>
+						<h:outputText value="#{quarto.categoria.capacidade}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Valor</f:facet>
+						<h:outputText value="#{quarto.categoria.valor}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Ação</f:facet>
+						<p:commandButton value="Escolher" ajax="false"
+							action="#{estadiaBean.gravarReserva}">
+							<f:setPropertyActionListener target="#{estadiaBean.selectQuarto}" value="#{quarto}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+</html>

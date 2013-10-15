@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+
+	<ui:define name="conteudo">
+	
+		<h:form>
+			<p:messages autoUpdate="true" />
+			<p:growl autoUpdate="true" />
+
+			<p:fieldset legend="Dados do Usuario">
+
+				<p:panelGrid columns="2">
+
+					<h:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
+						required="true" requiredMessage="Nome Obrigatório">
+						<f:validateLength minimum="5" />
+					</p:inputText>
+
+
+					<h:outputLabel value="Telefone: " for="fone" />
+					<p:inputText id="fone" value="#{usuarioBean.usuario.telefone}"
+						required="true" requiredMessage="Telefone Obrigatório">
+						<f:validateLength minimum="8" maximum="9"/>
+					</p:inputText>
+					
+					<h:outputLabel value="Email: " for="mail" />
+					<p:inputText id="mail" value="#{usuarioBean.usuario.email}"
+						required="true" requiredMessage="Email Obrigatório">
+						<f:validateLength minimum="5" maximum="90"/>
+					</p:inputText>
+					
+					<h:outputLabel value="Login: " for="login" />
+					<p:inputText id="login" value="#{usuarioBean.usuario.login.usuario}"
+						required="true" requiredMessage="Login Obrigatório">
+						<f:validateLength minimum="5" maximum="14"/>
+					</p:inputText>
+					
+					<h:outputLabel value="Senha: " for="senha" />
+					<p:password id="senha" value="#{usuarioBean.usuario.login.senha}"
+						required="true" requiredMessage="Senha Obrigatório">
+						<f:validateLength minimum="5" maximum="14"/>
+					</p:password>
+				</p:panelGrid>
+					<p:commandButton value="Gravar" action="#{usuarioBean.gravar}" />
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+
+</html>

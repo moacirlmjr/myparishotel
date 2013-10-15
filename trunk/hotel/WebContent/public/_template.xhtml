@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+<h:body>
+	<div id="cabecalho">
+		<h:graphicImage library="img" name="logoHotel.png" />
+		<p:themeSwitcher value="#{temaBean.tema}"
+			style="position: absolute; right: 20px;">
+			<f:selectItems value="#{temaBean.temas}" />
+		</p:themeSwitcher>
+		<h:form>
+			<p:menubar>
+				<p:submenu label="Efetuar Cadastro">
+					<p:menuitem value="Cadastro" action="cadastroUsuarioPublico" />
+					<p:menuitem value="Login" action="login" />
+				</p:submenu>
+				<p:submenu label="Contato">
+					<p:menuitem value="Contato" action="contato" />
+				</p:submenu>
+				<p:submenu label="Instruções">
+					<p:menuitem value="Dados para Acesso" action="instrucoes" />					
+				</p:submenu>
+			</p:menubar>
+		</h:form>
+
+		<hr />
+		<h1>
+			<ui:insert name="titulo"></ui:insert>
+		</h1>
+	</div>
+
+	<div id="conteudo">
+		<ui:insert name="conteudo">
+		</ui:insert>
+	</div>
+	<br />
+	<hr />
+	<div id="rodape" style="align: justify">
+		<p:fieldset style="align: justify">Desenvolvido por Danyllo Wagner</p:fieldset>
+	</div>
+
+</h:body>
+
+</html>
