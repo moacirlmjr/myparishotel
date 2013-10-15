@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:fieldset legend="Relatorio de Ocupacoes">
+			<p:dataTable value="#{estadiaBean.ocupacoes}" var="estadia"
+				paginator="true" rows="4">
+				<p:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{estadia.usuario.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Telefone</f:facet>
+					<h:outputText value="#{estadia.usuario.telefone}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Nr quarto</f:facet>
+					<h:outputText value="#{estadia.quarto.numero}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Categoria</f:facet>
+					<h:outputText value="#{estadia.quarto.categoria.categoria}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Data Inicio</f:facet>
+					<h:outputText value="#{estadia.dataInicio.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">Data Fim</f:facet>
+					<h:outputText value="#{estadia.dataFim.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">Total dias</f:facet>
+					<h:outputText value="#{estadia.numeroDias}" />
+				</p:column> 
+				<p:column>
+					<f:facet name="header">Hospede Extra</f:facet>
+					<h:outputText value="#{estadia.camaExtra}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Ocupantes</f:facet>
+					<h:outputText value="#{estadia.numeroDeHospedes}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Valor Total</f:facet>
+					<h:outputText value="#{estadia.valorTotal}" />
+				</p:column>
+			</p:dataTable>
+		</p:fieldset>
+	</ui:define>
+
+</ui:composition>
+</html>
