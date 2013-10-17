@@ -12,6 +12,7 @@
 	<ui:define name="conteudo">
 
 		<p:fieldset legend="Relatorio de Reservas">
+		<h:form>
 			<p:dataTable value="#{estadiaBean.reservasAtuais}" var="reserva"
 				paginator="true" rows="4">
 				<p:column>
@@ -53,11 +54,16 @@
 					<h:outputText value="#{reserva.camaExtra}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header">Ação</f:facet>
-					<p:commandButton value="Transformar em Ocupação" action="#{estadiaBean.transformaEmOcupacao}>
-					</p:commandButton>
-				</p:column>
+						<f:facet name="header">Ação</f:facet>
+						<p:commandButton value="Ocupar" ajax="false"
+							action="#{estadiaBean.transformaEmOcupacao}">
+							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
+								value="#{estadia}" />
+						</p:commandButton>
+					</p:column>
+
 			</p:dataTable>
+			</h:form>
 		</p:fieldset>
 	</ui:define>
 
