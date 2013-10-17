@@ -11,7 +11,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.validator.ValidatorException;
@@ -49,18 +48,15 @@ public class EstadiaBean {
 		renderizarQuartosDisponiveis = false;
 	}
 
-
 	public Integer getNumeroDias() {
 		return numeroDias;
 	}
-
 
 	public void setNumeroDias(Integer numeroDias) {
 		this.numeroDias = numeroDias;
 	}
 
-
-	public void setEstadia1(Estadia estadia) {
+	public void setEstadia(Estadia estadia) {
 		this.estadia = estadia;
 	}
 
@@ -95,9 +91,9 @@ public class EstadiaBean {
 		return new DAO<Estadia>(Estadia.class).findListResults(
 				"Estadia.findOcupacoesAtuais", params);
 	}
-	
+
 	public List<Estadia> getReservasUsuario() {
-		Map<String, Object> params = new HashMap<String, Object>();		 
+		Map<String, Object> params = new HashMap<String, Object>();
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context
 				.getExternalContext().getRequest();
@@ -108,25 +104,28 @@ public class EstadiaBean {
 	}
 
 	public List<Estadia> getOcupacoesUsuario() {
-		Map<String, Object> params = new HashMap<String, Object>();		 
+		Map<String, Object> params = new HashMap<String, Object>();
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context
 				.getExternalContext().getRequest();
 		Usuario user = (Usuario) request.getSession().getAttribute("usuario");
 		params.put("uid", user.getId());
-		System.out.println(user.getNome()+ "**********************************");
+		System.out.println(user.getNome()
+				+ "**********************************");
 		return new DAO<Estadia>(Estadia.class).findListResults(
 				"Estadia.findOcupacoesUsuario", params);
 	}
 
 	public List<Estadia> getOcupacoes() {
 
-		return new DAO<Estadia>(Estadia.class).findListResults("Estadia.findOcupacoes");
+		return new DAO<Estadia>(Estadia.class)
+				.findListResults("Estadia.findOcupacoes");
 
 	}
 
 	public List<Estadia> getReservas() {
-		return new DAO<Estadia>(Estadia.class).findListResults("Estadia.findReservas");
+		return new DAO<Estadia>(Estadia.class)
+				.findListResults("Estadia.findReservas");
 	}
 
 	public String gravarReserva() {
@@ -136,22 +135,20 @@ public class EstadiaBean {
 					.getExternalContext().getRequest();
 			HttpSession httpSession = request.getSession(true);
 			Usuario user = (Usuario) httpSession.getAttribute("usuario");
-			
-			JPAUtil jp = new JPAUtil();
 
 			user = new DAO<Usuario>(Usuario.class).buscaPorId(user.getId());
-			user = jp.getEntityManager().merge(user);
 			this.estadia.setUsuario(user);
 			this.estadia.setDataFim(CalendarUtil.aumentaDias(
 					this.estadia.getDataInicio(), this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.RESERVADO);
 			this.estadia.setIsAtivo(false);
-			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto.getId());
-			Quarto merge = jp.getEntityManager().merge(q);
-			this.estadia.setQuarto(merge);
-
+			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
+					.getId());
+			this.estadia.setQuarto(q);
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
+			this.estadia = new Estadia();
 			selectQuarto = new Quarto();
+
 			categoriaId = 0;
 			estadia.setDataInicio(Calendar.getInstance());
 			quartos = new LinkedList<Quarto>();
@@ -180,42 +177,7 @@ public class EstadiaBean {
 
 	}
 
-	public void validaDataFinal(FacesContext context, UIComponent component,
-			Object value) {
-		Date dataFim = (Date) value;
-		Date hoje = Calendar.getInstance().getTime();
-
-		UIInput dataInicio = (UIInput) component.getAttributes().get(
-				"dataInicio");
-		Date dataIni = (Date) dataInicio.getValue();
-
-		System.out.println(dataIni);
-
-		if (hoje.after(dataFim)) {
-			throw new ValidatorException(new FacesMessage(
-					"Data final eh menor ou igual que data de hoje"));
-		} else if (dataIni.after(dataFim)) {
-			throw new ValidatorException(new FacesMessage(
-					"Data final eh menor ou igual que data Inicial"));
-		} else {
-			// this.reserva.setDataFim((Calendar) value);
-			throw new ValidatorException(new FacesMessage("Datas OK"));
-		}
-
-	}
-
-	public String verificarDisponibilidade() {
-		return "listaReservaDisponiveis?faces-redirect=true";
-	}
-
-	public String gravarOcupacao() {
-		System.out.println("Gravando estadia "
-				+ this.estadia.getUsuario().getNome());
-		new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
-		this.estadia = new Estadia();
-		return "relOcupacoes?faces-redirect=true";
-	}
-
+	
 	public void pesquisarReserva(ActionEvent ae) {
 		List<Estadia> listEstadias = new DAO<Estadia>(Estadia.class)
 				.listaTodos();
@@ -258,9 +220,6 @@ public class EstadiaBean {
 
 	}
 
-	
-
-
 	public int getNumeroDeHospedes() {
 		if (this.estadia.isCamaExtra() == true) {
 			this.numeroDeHospedes = this.estadia.getQuarto().getCategoria()
@@ -284,7 +243,6 @@ public class EstadiaBean {
 		this.categoriaId = categoriaId;
 	}
 
-	
 	public boolean isRenderizarQuartosDisponiveis() {
 		return renderizarQuartosDisponiveis;
 	}
@@ -309,14 +267,18 @@ public class EstadiaBean {
 	public void setSelectQuarto(Quarto selectQuarto) {
 		this.selectQuarto = selectQuarto;
 	}
-	
-	public String transformaEmOcupacao(){
+
+	public String transformaEmOcupacao() {
+		this.estadia.setQuartoStatus(EstadiaStatus.OCUPADO);
+		new DAO<Estadia>(Estadia.class).atualiza(this.estadia);
 		return "relatorioOcupacoesAtuais";
-		
+
 	}
-	
-	public String liberaOcupacao(){
+
+	public String liberaOcupacao() {
+		this.estadia.setQuartoStatus(EstadiaStatus.DESOCUPADO);
+		new DAO<Estadia>(Estadia.class).atualiza(this.estadia);
 		return "relatorioOcupacoes";
-		
+
 	}
 }
