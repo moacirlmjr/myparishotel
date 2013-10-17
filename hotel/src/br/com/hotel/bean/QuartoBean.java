@@ -6,8 +6,6 @@ import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.Query;
-
 import br.com.hotel.dao.DAO;
 import br.com.hotel.dao.JPAUtil;
 import br.com.hotel.modelo.Categoria;
@@ -18,50 +16,33 @@ public class QuartoBean {
 
 	private Quarto quarto = new Quarto();
 	private Integer categoriaId;
-	
 
 	public Quarto getQuarto() {
 		return this.quarto;
 	}
-	
-	
 
 	public Integer getCategoriaId() {
 		return categoriaId;
 	}
 
-
-
 	public void setCategoriaId(Integer categoriaId) {
 		this.categoriaId = categoriaId;
 	}
-
-
 
 	public List<Quarto> getQuartos() {
 		return new DAO<Quarto>(Quarto.class).listaTodos();
 	}
 
-/*	public String gravar() {
-		Categoria cat = new DAO<Categoria>(Categoria.class).buscaPorId(this.categoriaId);
+	public String gravar() {
+		Categoria cat = new DAO<Categoria>(Categoria.class)
+				.buscaPorId(this.categoriaId);
 		System.out.println("Categoria" + cat.getCategoria());
 		this.quarto.setCategoria(cat);
-		
+
 		new DAO<Quarto>(Quarto.class).adiciona(this.quarto);
 		this.quarto = new Quarto();
 		return "quarto?faces-redirect=true";
-	}*/
-	
-	public String gravar() {
-		JPAUtil jp = new JPAUtil();
-		Query q = (Query) jp.getEntityManager().createQuery( "insert into quarto q(" + this.quarto.getNumero() + "," + this.categoriaId +")" 
-																+ " select q.numero, q.categoriaId from quarto q", Quarto.class);
-		int result = q.executeUpdate();
-		System.out.println("Numero: *****************" + result);
-		return "quarto?faces-redirect=true";
 	}
-	
-	
 
 	public List<Categoria> getListaCategorias() {
 

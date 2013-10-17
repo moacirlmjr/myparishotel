@@ -136,15 +136,19 @@ public class EstadiaBean {
 					.getExternalContext().getRequest();
 			HttpSession httpSession = request.getSession(true);
 			Usuario user = (Usuario) httpSession.getAttribute("usuario");
+			
+			JPAUtil jp = new JPAUtil();
 
 			user = new DAO<Usuario>(Usuario.class).buscaPorId(user.getId());
+			user = jp.getEntityManager().merge(user);
 			this.estadia.setUsuario(user);
 			this.estadia.setDataFim(CalendarUtil.aumentaDias(
 					this.estadia.getDataInicio(), this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.RESERVADO);
 			this.estadia.setIsAtivo(false);
 			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto.getId());
-			this.estadia.setQuarto(q);
+			Quarto merge = jp.getEntityManager().merge(q);
+			this.estadia.setQuarto(merge);
 
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
 			selectQuarto = new Quarto();
@@ -306,7 +310,12 @@ public class EstadiaBean {
 		this.selectQuarto = selectQuarto;
 	}
 	
-	public String transformarEmOcupacao(ActionEvent ae){
+	public String transformaEmOcupacao(){
+		return "relatorioOcupacoesAtuais";
+		
+	}
+	
+	public String liberaOcupacao(){
 		return "relatorioOcupacoes";
 		
 	}

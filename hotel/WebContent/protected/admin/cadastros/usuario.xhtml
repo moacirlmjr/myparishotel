@@ -39,16 +39,23 @@
 					</p:inputText>
 					
 					<h:outputLabel value="Login: " for="login" />
-					<p:inputText id="login" value="#{usuarioBean.usuario.login.usuario}"
+					<p:inputText id="login" value="#{usuarioBean.usuario.login}"
 						required="true" requiredMessage="Login Obrigatório">
 						<f:validateLength minimum="5" maximum="14"/>
 					</p:inputText>
 					
 					<h:outputLabel value="Senha: " for="senha" />
-					<p:password id="senha" value="#{usuarioBean.usuario.login.senha}"
+					<p:password id="senha" value="#{usuarioBean.usuario.senha}"
 						required="true" requiredMessage="Senha Obrigatório">
 						<f:validateLength minimum="5" maximum="14"/>
 					</p:password>
+					<h:outputLabel value="Role do usuário: " for="roleID" />
+					<p:selectOneMenu name="selecaoRole" id="roleID"
+						value="#{usuarioBean.roleID}">
+						<f:selectItem itemValue="0" itemLabel="selecione..." />						
+						<f:selectItem itemValue="1" itemLabel="Usuario" />
+						<f:selectItem itemValue="2" itemLabel="Administrador" />						
+					</p:selectOneMenu>
 				</p:panelGrid>
 					<p:commandButton value="Gravar" action="#{usuarioBean.gravar}" />
 			</p:fieldset>
