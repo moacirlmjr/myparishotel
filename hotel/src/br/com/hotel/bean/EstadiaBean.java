@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -29,7 +29,7 @@ import br.com.hotel.modelo.Usuario;
 import br.com.hotel.util.CalendarUtil;
 
 @ManagedBean
-@SessionScoped
+@RequestScoped
 public class EstadiaBean {
 
 	private Estadia estadia = new Estadia();
