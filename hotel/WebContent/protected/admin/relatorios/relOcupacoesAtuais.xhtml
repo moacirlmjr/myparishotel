@@ -11,60 +11,66 @@
 
 	<ui:define name="conteudo">
 
-			<p:fieldset legend="Relatorio de Ocupacoes Atuais">
-			<p:dataTable value="#{estadiaBean.ocupacoesAtuais}" var="estadia"
-				paginator="true" rows="4">
-				<p:column>
-					<f:facet name="header">Nome</f:facet>
-					<h:outputText value="#{estadia.usuario.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Telefone</f:facet>
-					<h:outputText value="#{estadia.usuario.telefone}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Nr quarto</f:facet>
-					<h:outputText value="#{estadia.quarto.numero}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Categoria</f:facet>
-					<h:outputText value="#{estadia.quarto.categoria.categoria}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Data Inicio</f:facet>
-					<h:outputText value="#{estadia.dataInicio.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
-				</p:column>
-				<p:column>
-					<f:facet name="header">Data Fim</f:facet>
-					<h:outputText value="#{estadia.dataFim.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
-				</p:column>
-				<p:column>
-					<f:facet name="header">Total dias</f:facet>
-					<h:outputText value="#{estadia.numeroDias}" />
-				</p:column> 
-				<p:column>
-					<f:facet name="header">Hospede Extra</f:facet>
-					<h:outputText value="#{estadia.camaExtra}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Ocupantes</f:facet>
-					<h:outputText value="#{estadia.numeroDeHospedes}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Valor Total</f:facet>
-					<h:outputText value="#{estadia.valorTotal}" />
-				</p:column>
-				<f:facet name="header">Ação</f:facet>
-					<p:commandButton value="Liberar Quarto" ajax="false"
-						actionListener="#{estadiaBean.liberarOcupacao}">
-						<f:setPropertyActionListener target="#{estadiaBean.estadia}"
-							value="#{estadiaBean.estadia}" />
-					</p:commandButton>
-			</p:dataTable>
+
+		<p:fieldset legend="Relatorio de Ocupacoes Atuais">
+			<h:form>
+				<p:dataTable value="#{estadiaBean.ocupacoesAtuais}" var="estadia"
+					paginator="true" rows="4">
+					<p:column>
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{estadia.usuario.nome}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Telefone</f:facet>
+						<h:outputText value="#{estadia.usuario.telefone}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Nr</f:facet>
+						<h:outputText value="#{estadia.quarto.numero}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Categoria</f:facet>
+						<h:outputText value="#{estadia.quarto.categoria.categoria}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Inicio</f:facet>
+						<h:outputText value="#{estadia.dataInicio.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Fim</f:facet>
+						<h:outputText value="#{estadia.dataFim.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Nr dias</f:facet>
+						<h:outputText value="#{estadia.numeroDias}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Cama Extra</f:facet>
+						<h:outputText value="#{estadia.camaExtra}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Ocupantes</f:facet>
+						<h:outputText value="#{estadia.numeroDeHospedes}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Total</f:facet>
+						<h:outputText value="#{estadia.valorTotal}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Ação</f:facet>
+						<p:commandButton value="Liberar Quarto" ajax="false"
+							action="#{estadiaBean.liberaOcupacao}">
+							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
+								value="#{estadia}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</h:form>
 		</p:fieldset>
 	</ui:define>
 
