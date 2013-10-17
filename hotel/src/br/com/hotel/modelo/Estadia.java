@@ -28,13 +28,11 @@ import br.com.hotel.util.CalendarUtil;
 		@NamedQuery(name = "Estadia.findReservas", query = "select e from Estadia e where estadiaStatus = 'RESERVADO'"),
 		@NamedQuery(name = "Estadia.findByUser", query = "select e from Estadia e where usuario.id = :userid order by dataInicio desc"),
 		@NamedQuery(name = "Estadia.findOcupacoesUsuario", query = "select e from Estadia e where estadiaStatus = 'OCUPADO' and usuario_id = :uid"),
-		@NamedQuery(name = "Estadia.findReservasUsuario", query = "select e from Estadia e where estadiaStatus = 'RESERVADO' and usuario_id = :uid"),
-		@NamedQuery(name = "Estadia.transformaOcupacao", query = "update Estadia e set estadiaStatus = 'OCUPADO' where id = :id"),
-		@NamedQuery(name = "Estadia.liberaOcupacao", query = "update Estadia e set estadiaStatus = 'DESOCUPADO' where id = :id")})
+		@NamedQuery(name = "Estadia.findReservasUsuario", query = "select e from Estadia e where estadiaStatus = 'RESERVADO' and usuario_id = :uid") })
 public class Estadia implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -63,6 +61,36 @@ public class Estadia implements Serializable {
 
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((quarto == null) ? 0 : quarto.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+		result = prime * result
+				+ ((dataInicio == null) ? 0 : dataInicio.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Estadia other = (Estadia) obj;
+		if (quarto == null) {
+			if (other.getQuarto() != null)
+				return false;
+		} else if (!usuario.getNome().equals(other.getUsuario().getNome()))
+			return false;
+		return false;
+
+	}
+
 	public Estadia(Usuario usuario, Quarto quarto, Calendar dataInicio,
 			Calendar dataFim, boolean camaExtra) {
 		super();
@@ -73,8 +101,6 @@ public class Estadia implements Serializable {
 		CamaExtra = camaExtra;
 		this.numeroDeHospedes = getNumeroDeHospedes();
 	}
-	
-	
 
 	public Estadia(int id, Usuario usuario, Quarto quarto, Calendar dataInicio,
 			Calendar dataFim, EstadiaStatus estadiaStatus, Boolean isAtivo,
@@ -140,10 +166,10 @@ public class Estadia implements Serializable {
 	}
 
 	public int getNumeroDeHospedes() {
-		if(CamaExtra){
-			numeroDeHospedes=this.quarto.getCategoria().getCapacidade()+1;
-		}else{
-			numeroDeHospedes=this.quarto.getCategoria().getCapacidade();
+		if (CamaExtra) {
+			numeroDeHospedes = this.quarto.getCategoria().getCapacidade() + 1;
+		} else {
+			numeroDeHospedes = this.quarto.getCategoria().getCapacidade();
 		}
 		return numeroDeHospedes;
 	}
@@ -167,24 +193,27 @@ public class Estadia implements Serializable {
 	public void setIsAtivo(Boolean isAtivo) {
 		this.isAtivo = isAtivo;
 	}
-	
-	public Integer getNumeroDias(){
-		return CalendarUtil.getTotalDiasHospedagem(this.dataInicio, this.dataFim);
+
+	public Integer getNumeroDias() {
+		return CalendarUtil.getTotalDiasHospedagem(this.dataInicio,
+				this.dataFim);
 	}
-	
-	public Double getValorTotal(){
-		if(CamaExtra){
-			BigDecimal valor = new BigDecimal(getNumeroDias()*this.quarto.getCategoria().getValor() * 1.3); 
-			valor.setScale(2, BigDecimal.ROUND_DOWN);  
+
+	public Double getValorTotal() {
+		if (CamaExtra) {
+			BigDecimal valor = new BigDecimal(getNumeroDias()
+					* this.quarto.getCategoria().getValor() * 1.3);
+			valor.setScale(2, BigDecimal.ROUND_DOWN);
 			double valorFormatado = valor.doubleValue();
-			return valorFormatado;		
-		} else{
-			BigDecimal valor = new BigDecimal(getNumeroDias()*this.quarto.getCategoria().getValor()); 
-			valor.setScale(2, BigDecimal.ROUND_DOWN);  
+			return valorFormatado;
+		} else {
+			BigDecimal valor = new BigDecimal(getNumeroDias()
+					* this.quarto.getCategoria().getValor());
+			valor.setScale(2, BigDecimal.ROUND_DOWN);
 			double valorFormatado = valor.doubleValue();
-			return valorFormatado;		
+			return valorFormatado;
 		}
-		
+
 	}
 
 }
