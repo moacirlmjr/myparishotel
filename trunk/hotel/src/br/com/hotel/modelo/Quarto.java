@@ -2,7 +2,6 @@ package br.com.hotel.modelo;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +23,8 @@ public class Quarto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private Integer numero;
-	@OneToOne(cascade = CascadeType.ALL, targetEntity=Categoria.class)
+	
+	@OneToOne
 	private Categoria categoria;
 
 	public Quarto() {

@@ -4,14 +4,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -41,12 +39,10 @@ public class Estadia implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuario_id")
+	@OneToOne
 	private Usuario usuario;
 
-	@OneToOne(cascade = CascadeType.ALL, targetEntity=Quarto.class)
-	@JoinColumn(name = "apartamento_id")
+	@OneToOne
 	private Quarto quarto;
 
 	@Temporal(TemporalType.DATE)

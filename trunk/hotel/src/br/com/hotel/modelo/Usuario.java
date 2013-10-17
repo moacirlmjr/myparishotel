@@ -2,7 +2,6 @@ package br.com.hotel.modelo;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +27,8 @@ public class Usuario implements Serializable {
 	private String telefone;
 	private String login;
 	private String senha;
-	@OneToOne (cascade = CascadeType.ALL, targetEntity=Role.class)
+	
+	@OneToOne
 	private Role role;
 
 	public Usuario() {
