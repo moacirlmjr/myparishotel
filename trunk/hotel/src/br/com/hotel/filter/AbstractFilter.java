@@ -17,15 +17,15 @@ public abstract class AbstractFilter {
 	protected void doLogin(ServletRequest request, ServletResponse response,
 			HttpServletRequest req) throws ServletException, IOException {
 		RequestDispatcher rd = req
-				.getRequestDispatcher("/public/login.xhtml?faces-redirect=true");
+				.getRequestDispatcher("login");
 		rd.forward(request, response);
 	}
 
 	protected void accessDenied(ServletRequest request,
 			ServletResponse response, HttpServletRequest req)
-			throws ServletException, IOException {
+			throws ServletException, IOException, SecurityException, NullPointerException {
 		RequestDispatcher rd = req
-				.getRequestDispatcher("/public/accessoNegado.xhtml?faces-redirect=true");
+				.getRequestDispatcher("acessoNegado");
 		rd.forward(request, response);
 	}
 }
