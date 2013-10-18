@@ -18,12 +18,18 @@
 			<p:menubar>
 				<p:submenu label="Reservas">
 					<p:menuitem value="Efetuar Reserva" action="checkin" />
-					<p:menuitem value="Minhas Reservas" action="relatorioReservasUsuario" />
+					<p:menuitem value="Minhas Reservas"
+						action="relatorioReservasUsuario" />
 				</p:submenu>
 				<p:submenu label="Ocupações">
-					<p:menuitem value="Minhas Ocupações" action="relatorioOcupacoesUsuario" />					
+					<p:menuitem value="Minhas Ocupações"
+						action="relatorioOcupacoesUsuario" />
 				</p:submenu>
-				<p:submenu label="Sair" action="#{loginBean.logOut}"></p:submenu>
+				<p:submenu label="Sair">
+				<p:menuitem value="Finalizar sessão"
+					action="#{loginBean.logOut}" />
+				</p:submenu>
+
 			</p:menubar>
 		</h:form>
 
