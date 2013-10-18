@@ -7,11 +7,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import br.com.hotel.dao.DAO;
 import br.com.hotel.modelo.Usuario;
 import br.com.hotel.util.JSFMessageUtil;
-import br.com.hotel.util.RequestUtil;
 
 @SessionScoped
 @ManagedBean
@@ -32,8 +32,10 @@ public class LoginBean {
 	}
 
 	public String logOut() {
-		RequestUtil.getRequest().getSession().removeAttribute("usuario");
-		RequestUtil.getRequest().getSession().invalidate();
+		FacesContext facesContext = FacesContext.getCurrentInstance();    
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);        
+		session.removeAttribute("usuario");	
+		session.invalidate();    
 		return "logout";
 	}
 
