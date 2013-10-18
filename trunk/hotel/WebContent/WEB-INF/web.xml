@@ -36,5 +36,9 @@
 		<filter-name>DefaultUserPagesFilter</filter-name>
 		<url-pattern>/protected/user/*</url-pattern>
 	</filter-mapping>
+	<error-page>
+		<exception-type>java.lang.SecurityException</exception-type>
+		<location>/public/acessoNegado.jsf</location>
+	</error-page>
 </web-app>
 
