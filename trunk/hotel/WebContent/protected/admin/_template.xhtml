@@ -37,7 +37,10 @@
 					<p:menuitem value="Quartos" action="relatorioQuartos" />
 					<p:menuitem value="Categorias" action="relatorioCategoriaQuarto" />
 				</p:submenu>
-				<p:submenu label="Sair" action="#{loginBean.logOut}"></p:submenu>
+				<p:submenu label="Sair">
+				<p:menuitem value="Finalizar sessão"
+					action="#{loginBean.logOut}" />
+				</p:submenu>
 			</p:menubar>
 		</h:form>
 
