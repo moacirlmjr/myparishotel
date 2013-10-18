@@ -24,9 +24,9 @@ public class DefaultUserPagesFilter extends AbstractFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		Usuario user = (Usuario) req.getSession(true).getAttribute("usuario");
 
-		if(!user.isUser() || user == null){
+		if((!user.isUser() && !user.isAdmin()) || user == null){
 			accessDenied(request, response, req);
-			return;
+			throw new SecurityException();
 		}
 
 		chain.doFilter(request, response);
