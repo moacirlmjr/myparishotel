@@ -76,6 +76,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>cadastroReserva</from-outcome>
+			<to-view-id>/protected/admin/cadastros/checkInUser.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>relatorioReservas</from-outcome>
 			<to-view-id>/protected/admin/relatorios/relReservas.jsf</to-view-id>
 			<redirect />
