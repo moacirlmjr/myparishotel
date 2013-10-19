@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -18,6 +18,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.primefaces.event.FlowEvent;
 
 import br.com.hotel.dao.DAO;
 import br.com.hotel.dao.JPAUtil;
@@ -29,7 +31,7 @@ import br.com.hotel.modelo.Usuario;
 import br.com.hotel.util.CalendarUtil;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class EstadiaBean {
 
 	private Estadia estadia = new Estadia();
@@ -39,6 +41,7 @@ public class EstadiaBean {
 	private boolean renderizarQuartosDisponiveis;
 	private List<Quarto> quartos;
 	private Quarto selectQuarto;
+	private boolean skip;
 
 	public EstadiaBean() {
 		selectQuarto = new Quarto();
@@ -281,4 +284,23 @@ public class EstadiaBean {
 		return "relatorioOcupacoes";
 
 	}
+	
+	public boolean isSkip() {  
+        return skip;  
+    }  
+  
+    public void setSkip(boolean skip) {  
+        this.skip = skip;  
+    }  
+      
+    public String onFlowProcess(FlowEvent event) {         
+          
+        if(skip) {  
+            skip = false;   //reset in case user goes back  
+            return "confirm";  
+        }  
+        else {  
+            return event.getNewStep();  
+        }  
+    }  
 }
