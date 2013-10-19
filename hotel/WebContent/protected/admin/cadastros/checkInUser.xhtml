@@ -57,7 +57,7 @@
 
 						</h:panelGrid>
 						<h:outputText value="Deixar este passo: " />
-							<h:selectBooleanCheckbox value="#{estadiaBean.skip}" />
+						<h:selectBooleanCheckbox value="#{estadiaBean.skip}" />
 					</p:panel>
 				</p:tab>
 
@@ -67,22 +67,26 @@
 
 						<h:messages errorClass="error" />
 
-						<h:panelGrid columns="2" columnClasses="label, value"
-							styleClass="grid">
-							<h:outputText value="Firstname: *" />
-							<p:inputText required="true" label="Firstname"
-								value="#{userWizard.user.firstname}" />
-
-							<h:outputText value="Lastname: *" />
-							<p:inputText required="true" label="Lastname"
-								value="#{userWizard.user.lastname}" />
-
-							<h:outputText value="Age: " />
-							<p:inputText value="#{userWizard.user.age}" />
-
-							<h:outputText value="Deixar este passo: " />
-							<h:selectBooleanCheckbox value="#{estadiaBean.skip}" />
-						</h:panelGrid>
+						<p:dataTable value="#{usuarioBean.usuarios}" var="usuario"
+							paginator="true" rows="4">
+							<p:column>
+								<f:facet name="header">Id</f:facet>
+								<h:outputText value="#{usuario.id}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">Nome</f:facet>
+								<h:outputText value="#{usuario.nome}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">Email</f:facet>
+								<h:outputText value="#{usuario.email}" />
+							</p:column>
+							<p:column>
+								<f:facet name="header">Telefone</f:facet>
+								<h:outputText value="#{usuario.telefone}" />
+							</p:column>
+							
+						</p:dataTable>
 					</p:panel>
 				</p:tab>
 
@@ -135,7 +139,6 @@
 
 
 				<p:tab id="confirm" title="Confirmação">
-
 
 
 				</p:tab>
