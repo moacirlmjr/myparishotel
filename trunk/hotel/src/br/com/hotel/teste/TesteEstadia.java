@@ -3,7 +3,6 @@ package br.com.hotel.teste;
 import java.util.Calendar;
 
 import br.com.hotel.dao.DAO;
-import br.com.hotel.dao.JPAUtil;
 import br.com.hotel.enumerator.EstadiaStatus;
 import br.com.hotel.modelo.Estadia;
 import br.com.hotel.modelo.Quarto;
