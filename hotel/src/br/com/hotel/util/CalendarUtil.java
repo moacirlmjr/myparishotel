@@ -22,17 +22,15 @@ public class CalendarUtil {
 	}
 
 	public static Calendar aumentaDias(Calendar data, int qtde) {
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) + qtde);
-		return c;
-
+		Calendar nova_data = data;
+		nova_data.add(Calendar.DAY_OF_YEAR, qtde);
+		return nova_data;
 	}
 	
 	public static Calendar diminuiDias(Calendar data, int qtde) {
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH) - qtde);
-		return c;
-
+		Calendar nova_data = data;
+		nova_data.add(Calendar.DAY_OF_YEAR, -qtde);
+		return nova_data;
 	}
 
 	public static Calendar retornaDiaDeHoje() {

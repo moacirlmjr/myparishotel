@@ -11,48 +11,58 @@
 
 	<ui:define name="conteudo">
 
-	<p:fieldset legend="Relatorio de Reservas">
-			<p:dataTable value="#{estadiaBean.reservasUsuario}" var="reserva"
-				paginator="true" rows="4">
-				<p:column>
-					<f:facet name="header">Nome</f:facet>
-					<h:outputText value="#{reserva.usuario.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Telefone</f:facet>
-					<h:outputText value="#{reserva.usuario.telefone}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Numero do quarto</f:facet>
-					<h:outputText value="#{reserva.quarto.numero}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Categoria</f:facet>
-					<h:outputText value="#{reserva.quarto.categoria.categoria}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Data Inicio</f:facet>
-					<h:outputText value="#{reserva.dataInicio.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
+		<p:fieldset legend="Relatorio de Reservas">
+			<h:form>
+				<p:dataTable value="#{estadiaBean.reservasUsuario}" var="reserva"
+					paginator="true" rows="4">
+					<p:column>
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{reserva.usuario.nome}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Telefone</f:facet>
+						<h:outputText value="#{reserva.usuario.telefone}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Numero do quarto</f:facet>
+						<h:outputText value="#{reserva.quarto.numero}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Categoria</f:facet>
+						<h:outputText value="#{reserva.quarto.categoria.categoria}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Data Inicio</f:facet>
+						<h:outputText value="#{reserva.dataInicio.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 
-				</p:column>
-				<p:column>
-					<f:facet name="header">Data Fim</f:facet>
-					<h:outputText value="#{reserva.dataFim.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Data Fim</f:facet>
+						<h:outputText value="#{reserva.dataFim.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 
-				</p:column>
-				<p:column>
-					<f:facet name="header">Hospedes</f:facet>
-					<h:outputText value="#{reserva.quarto.categoria.capacidade}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Cama Extra</f:facet>
-					<h:outputText value="#{reserva.camaExtra}" />
-				</p:column>
-			</p:dataTable>
+					</p:column>
+					<p:column>
+						<f:facet name="header">Hospedes</f:facet>
+						<h:outputText value="#{reserva.quarto.categoria.capacidade}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Cama Extra</f:facet>
+						<h:outputText value="#{reserva.camaExtra}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Ação</f:facet>
+						<p:commandButton value="Excluir Reserva" ajax="false"
+							action="#{estadiaBean.excluiReserva}">
+							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
+								value="#{reserva}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
 		</p:fieldset>
 	</ui:define>
 

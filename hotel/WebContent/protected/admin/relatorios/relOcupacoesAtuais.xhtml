@@ -13,7 +13,7 @@
 
 
 		<p:fieldset legend="Relatorio de Ocupacoes Atuais">
-			<h:form>
+			<h:form id="formPrincipal">
 				<p:dataTable value="#{estadiaBean.ocupacoesAtuais}" var="estadia"
 					paginator="true" rows="4">
 					<p:column>
@@ -67,9 +67,44 @@
 							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
 								value="#{estadia}" />
 						</p:commandButton>
+						<p:commandButton value="liberar com Email" title="Liberar"
+							update=":formLiberar:Liberar" oncomplete="dialogLiberar.show()"
+							immediate="true">
+							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
+								value="#{estadia}" />
+						</p:commandButton>
 					</p:column>
 
 				</p:dataTable>
+			</h:form>
+
+			<h:form id="formLiberar">
+				<p:dialog header="Relatório de Liberação" widgetVar="dialogLiberar"
+					modal="true" id="Liberar">
+					<p:panelGrid id="panelAlterar" columns="2">
+						<h:outputLabel value="Nome: " />
+						<h:outputText value="#{estadia.usuario.nome}" />
+						<h:outputLabel value="Quarto:  " />
+						<h:outputText value="#{estadia.quarto.categoria.categoria}" />
+						<h:outputLabel value="Numero do quarto:  " />
+						<h:outputText value="#{estadia.quarto.numero}" />
+						<h:outputLabel value="Inicio:  " />
+						<h:outputText value="#{estadia.dataInicio.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						<h:outputLabel value="Fim:  " />
+						<h:outputText value="#{estadia.dataFim.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						<h:outputLabel value="Total:  " />
+						<h:outputText value="#{estadia.valorTotal}" />
+
+						<p:commandButton value="Enviar Email" ajax="false"
+							action="#{estadiaBean.liberaOcupacaoEmail}">							
+						</p:commandButton>
+
+					</p:panelGrid>
+				</p:dialog>
 			</h:form>
 		</p:fieldset>
 	</ui:define>

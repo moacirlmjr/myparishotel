@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.mail.EmailException;
 import org.primefaces.event.FlowEvent;
 
 import br.com.hotel.dao.DAO;
@@ -29,6 +30,7 @@ import br.com.hotel.modelo.Estadia;
 import br.com.hotel.modelo.Quarto;
 import br.com.hotel.modelo.Usuario;
 import br.com.hotel.util.CalendarUtil;
+import br.com.hotel.util.MailUtil;
 
 @ManagedBean
 @SessionScoped
@@ -145,8 +147,7 @@ public class EstadiaBean {
 					this.estadia.getDataInicio(), this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.RESERVADO);
 			this.estadia.setIsAtivo(false);
-			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
-					.getId());
+			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto.getId());
 			this.estadia.setQuarto(q);
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
 			this.estadia = new Estadia();
@@ -284,6 +285,20 @@ public class EstadiaBean {
 		return "relatorioOcupacoes";
 
 	}
+	
+	public String excluiReserva() {
+		new DAO<Estadia>(Estadia.class).remove(this.estadia);
+		return "relatorioReservasUsuario";
+
+	}
+	
+	public String liberaOcupacaoEmail() throws EmailException {
+		MailUtil mu = new MailUtil();
+		mu.enviaEmailSimples(this.estadia);
+		return "relatorioOcupacoes";
+
+	}
+	
 	
 	public boolean isSkip() {  
         return skip;  
