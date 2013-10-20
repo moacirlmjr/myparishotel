@@ -7,94 +7,91 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="../_template.xhtml">
-
-
 	<ui:define name="conteudo">
-		<h:form>
+		<h:form id="form">
 
 			<p:growl id="growl" sticky="true" showDetail="true" />
+			<p:messages autoUpdate="true" />
 
-			<p:wizard flowListener="#{estadiaBean.onFlowProcess}">
+			<p:commandButton value="Cancelar Reserva"
+				actionListener="#{estadiaBean.cancelarCheckinUser}" ajax="false" />
 
-				<p:tab id="cadastro" title="cadastro">
-					<p:panel header="Cadastro de usuário">
+			<p:wizard id="wiz" flowListener="#{estadiaBean.onFlowProcess}" widgetVar="wiz">
 
-						<h:messages errorClass="error" />
+				<p:tab id="cadastro" title="Usuario">
+					<p:commandButton value="Novo Usuario"
+						rendered="#{!estadiaBean.cadastroPesquisaUsuario}"
+						action="#{estadiaBean.prepararCadastroUsuario}" ajax="false" />
 
+					<p:commandButton value="Cancelar Cadastro"
+						rendered="#{estadiaBean.cadastroPesquisaUsuario}"
+						actionListener="#{estadiaBean.cancelarCheckinUser}"
+						update=":form:wiz" />
+					<br />
+					<p:dataTable value="#{estadiaBean.usuarios}" var="usuario"
+						paginator="true" rows="4"
+						rendered="#{!estadiaBean.cadastroPesquisaUsuario}">
+						<p:column>
+							<f:facet name="header">Id</f:facet>
+							<h:outputText value="#{usuario.id}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Nome</f:facet>
+							<h:outputText value="#{usuario.nome}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Email</f:facet>
+							<h:outputText value="#{usuario.email}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Telefone</f:facet>
+							<h:outputText value="#{usuario.telefone}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">Selecionar</f:facet>
+							<p:commandButton value="escolher" update=":form:wiz"
+								action="#{estadiaBean.escolherUsuario}">
+								<f:setPropertyActionListener target="#{estadiaBean.usuario}"
+									value="#{usuario}" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+
+					<p:panel header="Cadastro de usuário"
+						rendered="#{estadiaBean.cadastroPesquisaUsuario}">
 						<h:panelGrid columns="2" columnClasses="label, value">
 							<h:outputLabel value="Nome:" for="nome" />
-							<p:inputText id="nome" value="#{usuarioBean.usuario.nome}"
-								required="true" requiredMessage="Nome Obrigatório">
-								<f:validateLength minimum="5" />
+							<p:inputText id="nome" value="#{estadiaBean.usuario.nome}">
 							</p:inputText>
 
 
 							<h:outputLabel value="Telefone: " for="fone" />
-							<p:inputText id="fone" value="#{usuarioBean.usuario.telefone}"
-								required="true" requiredMessage="Telefone Obrigatório">
-								<f:validateLength minimum="8" maximum="9" />
+							<p:inputText id="fone" value="#{estadiaBean.usuario.telefone}">
 							</p:inputText>
 
 							<h:outputLabel value="Email: " for="mail" />
-							<p:inputText id="mail" value="#{usuarioBean.usuario.email}"
-								required="true" requiredMessage="Email Obrigatório">
-								<f:validateLength minimum="5" maximum="90" />
+							<p:inputText id="mail" value="#{estadiaBean.usuario.email}">
 							</p:inputText>
 
 							<h:outputLabel value="Login: " for="login" />
-							<p:inputText id="login" value="#{usuarioBean.usuario.login}"
-								required="true" requiredMessage="Login Obrigatório">
-								<f:validateLength minimum="5" maximum="14" />
+							<p:inputText id="login" value="#{estadiaBean.usuario.login}">
 							</p:inputText>
 
 							<h:outputLabel value="Senha: " for="senha" />
-							<p:password id="senha" value="#{usuarioBean.usuario.senha}"
-								required="true" requiredMessage="Senha Obrigatório">
-								<f:validateLength minimum="5" maximum="14" />
+							<p:password id="senha" value="#{estadiaBean.usuario.senha}">
 							</p:password>
 
-							<p:commandButton value="Gravar" action="#{usuarioBean.gravar}" />
+							<p:commandButton value="Gravar" actionListener="#{estadiaBean.gravarUsuario}" update="form"/>
 
 						</h:panelGrid>
-						<h:outputText value="Deixar este passo: " />
-						<h:selectBooleanCheckbox value="#{estadiaBean.skip}" />
 					</p:panel>
 				</p:tab>
 
-				<p:tab id="usuario" title="Pesquisar Usuário">
+				<p:tab id="reserva" title="Reserva de Quarto">
 
-					<p:panel header="Pesquisar usuário">
-
-						<h:messages errorClass="error" />
-
-						<p:dataTable value="#{usuarioBean.usuarios}" var="usuario"
-							paginator="true" rows="4">
-							<p:column>
-								<f:facet name="header">Id</f:facet>
-								<h:outputText value="#{usuario.id}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">Nome</f:facet>
-								<h:outputText value="#{usuario.nome}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">Email</f:facet>
-								<h:outputText value="#{usuario.email}" />
-							</p:column>
-							<p:column>
-								<f:facet name="header">Telefone</f:facet>
-								<h:outputText value="#{usuario.telefone}" />
-							</p:column>
-							
-						</p:dataTable>
-					</p:panel>
-				</p:tab>
-
-				<p:tab id="reserva" title="Reserva">
-					<p:panel header="Reserva de Quarto">
-
-						<h:messages errorClass="error" />
-
+					<p:panel header="Pesquisa de Quartos">
 						<h:panelGrid columns="2" columnClasses="label, value">
 							<h:outputLabel value="Data Inicial: " for="dataInicio" />
 							<p:calendar id="dataInicio"
@@ -131,16 +128,60 @@
 								<f:selectItem itemValue="true" itemLabel="Sim" />
 							</p:selectOneMenu>
 
-							<p:commandButton value="Pesquisar" update="form"
+							<p:commandButton value="Pesquisar" update=":form"
 								actionListener="#{estadiaBean.pesquisarReserva}" />
 						</h:panelGrid>
 					</p:panel>
+					<p:dataTable value="#{estadiaBean.quartos}" var="quarto"
+						rendered="#{estadiaBean.renderizarQuartosDisponiveis}"
+						paginator="true" rows="10">
+						<p:column>
+							<f:facet name="header">Numero do quarto</f:facet>
+							<h:outputText value="#{quarto.numero}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Categoria</f:facet>
+							<h:outputText value="#{quarto.categoria.categoria}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Hospedes</f:facet>
+							<h:outputText value="#{quarto.categoria.capacidade}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Valor</f:facet>
+							<h:outputText value="#{quarto.categoria.valor}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Ação</f:facet>
+							<p:commandButton value="Escolher" ajax="false"
+								action="#{estadiaBean.escolherQuarto}">
+								<f:setPropertyActionListener
+									target="#{estadiaBean.selectQuarto}" value="#{quarto}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
 				</p:tab>
 
 
 				<p:tab id="confirm" title="Confirmação">
+					<p:panel header="">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Nome:" for="nome" />
+							<h:outputText value="#{estadiaBean.usuario.nome}" />
+
+							<h:outputLabel value="Quarto:" for="quarto" />
+							<h:outputText value="#{estadiaBean.selectQuarto.numero}" />
+
+							<h:outputLabel value="Valor:" for="valor" />
+							<h:outputText value="R$ #{estadiaBean.selectQuarto.categoria.valor}" />
+						</h:panelGrid>
 
 
+						<p:commandButton value="Confirmar" ajax="false"
+						oncomplete="wiz.loadStep(wiz.cfg.steps[0], true);"
+							action="#{estadiaBean.gravarCheckin}">
+						</p:commandButton>
+					</p:panel>
 				</p:tab>
 
 			</p:wizard>
