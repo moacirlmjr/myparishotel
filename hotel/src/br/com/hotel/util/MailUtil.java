@@ -1,13 +1,13 @@
 package br.com.hotel.util;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
+
+import br.com.hotel.modelo.Estadia;
 
 public class MailUtil {
 
@@ -18,7 +18,7 @@ public class MailUtil {
 	private static final String MAIL_OWNER = "MyParis Hotel";
 
 	@SuppressWarnings("deprecation")
-	public void enviaEmailSimples() throws EmailException {
+	public void enviaEmailSimples(Estadia estadia) throws EmailException {
 
 		SimpleEmail email = new SimpleEmail();
 
@@ -31,8 +31,17 @@ public class MailUtil {
 			email.setFrom(MailUtil.MAIL_USER); // será passado o email que você fará
 											// a autenticação
 			email.setSubject(MailUtil.MAIL_TITLE + " - " + MailUtil.MAIL_OWNER);
-			email.setMsg("Teste de envio de email");
-			email.setMsg("oioioi" + "\n" + "oioioi");
+			email.setMsg("Olá, senhor " + estadia.getUsuario().getNome() +
+					"\n" + 
+					"Através deste email estamos relatando os dados da sua ocupação no MyParis Hotel. Seguem os dados: "
+					+ "\n"+
+					"Quarto: " + estadia.getQuarto().getCategoria().getCategoria() + "\n" +
+					"Data inicio: " + estadia.getDataInicio() + "\n"+
+					"Data fim: " + estadia.getDataFim()+ "\n" +
+					"Cama Extra: " +  (estadia.isCamaExtra() == false ? "Não" : "Sim") + "\n" +
+					"Valor Total: " + estadia.getValorTotal()
+					)
+					;
 			email.send();
 
 		} catch (EmailException e) {
@@ -91,8 +100,8 @@ public class MailUtil {
 		HtmlEmail email = new HtmlEmail();
 
 		// adiciona uma imagem ao corpo da mensagem e retorna seu id
-		URL url = new URL("http://www.apache.org/images/asf_logo_wide.gif");
-		String cid = email.embed(url, "Apache logo");
+		//URL url = new URL("http://www.apache.org/images/asf_logo_wide.gif");
+		//String cid = email.embed(url, "Apache logo");
 
 		// configura a mensagem para o formato HTML
 		email.setHtmlMsg("<html>Logo do Apache - <img ></html>");
@@ -116,13 +125,5 @@ public class MailUtil {
 		email.send();
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void main(String[] args) throws MalformedURLException,
-			EmailException {
-		
-		MailUtil mu = new MailUtil();
-		mu.enviaEmailSimples();
 	
-
-	}
 }
