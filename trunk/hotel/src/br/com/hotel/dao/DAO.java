@@ -16,7 +16,7 @@ public class DAO<T> {
 		this.classe = classe;
 	}
 
-	public void adiciona(T t) {
+	public T adiciona(T t) {
 
 		// consegue a entity manager
 		EntityManager em = new JPAUtil().getEntityManager();
@@ -25,13 +25,15 @@ public class DAO<T> {
 		em.getTransaction().begin();
 
 		// persiste o objeto
-		em.persist(t);
+		T a = (T) em.merge(t);
 
 		// commita a transacao
 		em.getTransaction().commit();
 
 		// fecha a entity manager
 		em.close();
+		
+		return a;
 	}
 
 	public void remove(T t) {

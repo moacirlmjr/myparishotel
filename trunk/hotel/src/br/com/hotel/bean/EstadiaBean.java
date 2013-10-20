@@ -1,5 +1,6 @@
 package br.com.hotel.bean;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,13 +29,14 @@ import br.com.hotel.enumerator.EstadiaStatus;
 import br.com.hotel.modelo.Categoria;
 import br.com.hotel.modelo.Estadia;
 import br.com.hotel.modelo.Quarto;
+import br.com.hotel.modelo.Role;
 import br.com.hotel.modelo.Usuario;
 import br.com.hotel.util.CalendarUtil;
 import br.com.hotel.util.MailUtil;
 
 @ManagedBean
 @SessionScoped
-public class EstadiaBean {
+public class EstadiaBean implements Serializable{
 
 	private Estadia estadia = new Estadia();
 	private int numeroDeHospedes;
@@ -44,10 +46,14 @@ public class EstadiaBean {
 	private List<Quarto> quartos;
 	private Quarto selectQuarto;
 	private boolean skip;
+	private boolean cadastroPesquisaUsuario;
+	private Usuario usuario;
 
 	public EstadiaBean() {
 		selectQuarto = new Quarto();
 		categoriaId = 0;
+		usuario = new Usuario();
+		cadastroPesquisaUsuario = false;
 		estadia.setDataInicio(Calendar.getInstance());
 		quartos = new LinkedList<Quarto>();
 		renderizarQuartosDisponiveis = false;
@@ -147,7 +153,8 @@ public class EstadiaBean {
 					this.estadia.getDataInicio(), this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.RESERVADO);
 			this.estadia.setIsAtivo(false);
-			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto.getId());
+			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
+					.getId());
 			this.estadia.setQuarto(q);
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
 			this.estadia = new Estadia();
@@ -163,6 +170,47 @@ public class EstadiaBean {
 
 		renderizarQuartosDisponiveis = false;
 		return "relatorioReservasUsuario";
+	}
+	
+	public void gravarUsuario(ActionEvent ev) {
+		Role role = new DAO<Role>(Role.class).buscaPorId(1);
+		this.usuario.setRole(role);
+		this.usuario = new DAO<Usuario>(Usuario.class).adiciona(this.usuario);
+		FacesContext fcCtxt = FacesContext.getCurrentInstance();
+		FacesMessage mensagem = new FacesMessage();
+
+        mensagem.setSummary("Usuário Cadastrado: " + usuario.getLogin());
+        mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
+
+		fcCtxt.addMessage(null, mensagem);
+	}
+	
+	public String gravarCheckin() {
+		try {
+			this.estadia.setUsuario(usuario);
+			this.estadia.setDataFim(CalendarUtil.aumentaDias(
+					this.estadia.getDataInicio(), this.getNumeroDias()));
+			this.estadia.setQuartoStatus(EstadiaStatus.OCUPADO);
+			this.estadia.setIsAtivo(true);
+			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
+					.getId());
+			this.estadia.setQuarto(q);
+			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
+			
+			this.estadia = new Estadia();
+			this.usuario = new Usuario();
+			selectQuarto = new Quarto();
+			cadastroPesquisaUsuario = false;
+			categoriaId = 0;
+			estadia.setDataInicio(Calendar.getInstance());
+			quartos = new LinkedList<Quarto>();
+		} catch (Exception e) {
+			System.out.println("Deus nos acudaaaaaa!!!!!!");
+			e.printStackTrace();
+		}
+
+		renderizarQuartosDisponiveis = false;
+		return "";
 	}
 
 	public void validaDataInicio(FacesContext context, UIComponent component,
@@ -181,7 +229,6 @@ public class EstadiaBean {
 
 	}
 
-	
 	public void pesquisarReserva(ActionEvent ae) {
 		List<Estadia> listEstadias = new DAO<Estadia>(Estadia.class)
 				.listaTodos();
@@ -222,6 +269,46 @@ public class EstadiaBean {
 
 		return lista;
 
+	}
+
+	public void cancelarCheckinUser(ActionEvent av) {
+		this.estadia = new Estadia();
+		this.usuario = new Usuario();
+		selectQuarto = new Quarto();
+		cadastroPesquisaUsuario = false;
+		categoriaId = 0;
+		estadia.setDataInicio(Calendar.getInstance());
+		quartos = new LinkedList<Quarto>();
+	}
+	
+	public void escolherUsuario(){
+		FacesContext fcCtxt = FacesContext.getCurrentInstance();
+		FacesMessage mensagem = new FacesMessage();
+
+        mensagem.setSummary("Usuário Escolhido: " + usuario.getLogin());
+        mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
+
+		fcCtxt.addMessage(null, mensagem);
+	}
+	
+	public void escolherQuarto(){
+		FacesContext fcCtxt = FacesContext.getCurrentInstance();
+		FacesMessage mensagem = new FacesMessage();
+
+        mensagem.setSummary("Quarto Escolhido: " + selectQuarto.getNumero() + " R$" + selectQuarto.getCategoria().getValor());
+        mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
+
+		fcCtxt.addMessage(null, mensagem);
+	}
+	
+	public String prepararCadastroUsuario() {
+		usuario = new Usuario();
+		cadastroPesquisaUsuario = true;
+		return "" ;
+	}
+	
+	public List<Usuario> getUsuarios() {
+		return new DAO<Usuario>(Usuario.class).listaTodos();
 	}
 
 	public int getNumeroDeHospedes() {
@@ -298,24 +385,47 @@ public class EstadiaBean {
 		return "relatorioOcupacoes";
 
 	}
-	
-	
-	public boolean isSkip() {  
-        return skip;  
-    }  
-  
-    public void setSkip(boolean skip) {  
-        this.skip = skip;  
-    }  
-      
-    public String onFlowProcess(FlowEvent event) {         
-          
-        if(skip) {  
-            skip = false;   //reset in case user goes back  
-            return "confirm";  
-        }  
-        else {  
-            return event.getNewStep();  
-        }  
-    }  
+
+	public boolean isSkip() {
+		return skip;
+	}
+
+	public void setSkip(boolean skip) {
+		this.skip = skip;
+	}
+
+	public String onFlowProcess(FlowEvent event) {
+
+		
+		
+		if (skip) {
+			skip = false; // reset in case user goes back
+			return "confirm";
+		} else {
+			if(event.getOldStep().equals("cadastro")){
+				this.estadia = new Estadia();
+				selectQuarto = new Quarto();
+				renderizarQuartosDisponiveis = false;
+				estadia.setDataInicio(Calendar.getInstance());
+				quartos = new LinkedList<Quarto>();
+			}
+			return event.getNewStep();
+		}
+	}
+
+	public boolean isCadastroPesquisaUsuario() {
+		return cadastroPesquisaUsuario;
+	}
+
+	public void setCadastroPesquisaUsuario(boolean cadastroPesquisaUsuario) {
+		this.cadastroPesquisaUsuario = cadastroPesquisaUsuario;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 }
