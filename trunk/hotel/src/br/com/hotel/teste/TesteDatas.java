@@ -1,19 +1,15 @@
 package br.com.hotel.teste;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 import br.com.hotel.util.CalendarUtil;
 
 public class TesteDatas {
 	
 	public static void main(String[] args) {
-		Calendar dataDehoje = CalendarUtil.aumentaDias(Calendar.getInstance(), 0);
-		Calendar dataDepoisDeAmanha = CalendarUtil.aumentaDias(Calendar.getInstance(), 2);
 		
-		int dias = CalendarUtil.getTotalDiasHospedagem(dataDehoje, dataDepoisDeAmanha);
-		
-		System.out.println("dias: " + dias);
-
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+		System.out.println(sdf.format(CalendarUtil.aumentaDias(CalendarUtil.retornaDiaDeHoje(), 20).getTime()));
 		
 		
 	}
