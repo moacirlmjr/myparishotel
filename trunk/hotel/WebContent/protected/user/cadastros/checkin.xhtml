@@ -23,8 +23,7 @@
 					<h:outputLabel value="Data Inicial: " for="dataInicio" />
 					<p:calendar id="dataInicio"
 						value="#{estadiaBean.estadia.dataInicio.time}" required="true"
-						requiredMessage="Data inicial Obrigatória" pattern="dd/MM/yyyy"
-						timeZone="America/Sao_Paulo"
+						requiredMessage="Data inicial Obrigatória" pattern="dd/MM/yyyy"						
 						validator="#{estadiaBean.validaDataInicio}" />
 
 					<h:outputLabel value="Numero de noites: " />
