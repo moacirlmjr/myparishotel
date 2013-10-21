@@ -25,7 +25,8 @@ import br.com.hotel.util.CalendarUtil;
 		@NamedQuery(name = "Estadia.findOcupacoesAtuais", query = "select e from Estadia e where dataInicio between :dataHoje and :dataFimSemana and estadiaStatus = 'OCUPADO' order by dataInicio"),
 		@NamedQuery(name = "Estadia.findOcupacoes", query = "select e from Estadia e where estadiaStatus = 'OCUPADO' or estadiaStatus = 'DESOCUPADO' order by dataInicio"),
 		@NamedQuery(name = "Estadia.findReservasAtuais", query = "select e from Estadia e where dataInicio between :dataHoje and :dataFimSemana and estadiaStatus = 'RESERVADO' order by dataInicio"),
-		@NamedQuery(name = "Estadia.findReservas", query = "select e from Estadia e where estadiaStatus = 'RESERVADO' order by dataInicio"),
+		@NamedQuery(name = "Estadia.findReservas", query = "select e from Estadia e where estadiaStatus = 'RESERVADO' or estadiaStatus = 'CANCELADO' order by dataInicio"),
+		@NamedQuery(name = "Estadia.findReservasCanceladas", query = "select e from Estadia e where estadiaStatus = 'CANCELADO' order by dataInicio"),
 		@NamedQuery(name = "Estadia.findByUser", query = "select e from Estadia e where usuario.id = :userid order by dataInicio desc"),
 		@NamedQuery(name = "Estadia.findOcupacoesUsuario", query = "select e from Estadia e where (estadiaStatus = 'OCUPADO' or estadiaStatus = 'DESOCUPADO') and usuario_id = :uid order by dataInicio"),
 		@NamedQuery(name = "Estadia.findReservasUsuario", query = "select e from Estadia e where estadiaStatus = 'RESERVADO' and usuario_id = :uid order by dataInicio") })
@@ -215,5 +216,15 @@ public class Estadia implements Serializable {
 		}
 
 	}
+
+	public EstadiaStatus getEstadiaStatus() {
+		return estadiaStatus;
+	}
+
+	public void setEstadiaStatus(EstadiaStatus estadiaStatus) {
+		this.estadiaStatus = estadiaStatus;
+	}
+	
+	
 
 }

@@ -2,7 +2,8 @@ package br.com.hotel.enumerator;
 
 public enum EstadiaStatus {
 
-	RESERVADO,
+	RESERVADO,	
 	OCUPADO,
-	DESOCUPADO;
+	DESOCUPADO,
+	CANCELADO;
 }

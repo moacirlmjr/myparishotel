@@ -91,6 +91,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>relatorioReservasCanceladas</from-outcome>
+			<to-view-id>/protected/admin/relatorios/relReservasCanceladas.jsf</to-view-id>
+			<redirect />
+		</navigation-case>		
+		<navigation-case>
 			<from-outcome>relatorioOcupacoes</from-outcome>
 			<to-view-id>/protected/admin/relatorios/relOcupacoes.jsf</to-view-id>
 			<redirect />

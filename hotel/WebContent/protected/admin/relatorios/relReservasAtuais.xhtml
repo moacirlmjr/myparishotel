@@ -60,6 +60,11 @@
 							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
 								value="#{reserva}" />
 						</p:commandButton>
+						<p:commandButton value="Cancelar" ajax="false"
+							action="#{estadiaBean.cancelaReserva}">
+							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
+								value="#{reserva}" />
+						</p:commandButton>
 					</p:column>
 
 			</p:dataTable>
