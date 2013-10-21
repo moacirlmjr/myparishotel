@@ -1,13 +1,12 @@
 package br.com.hotel.bean;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -36,8 +35,12 @@ import br.com.hotel.util.MailUtil;
 
 @ManagedBean
 @SessionScoped
-public class EstadiaBean implements Serializable{
+public class EstadiaBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Estadia estadia = new Estadia();
 	private int numeroDeHospedes;
 	private Integer numeroDias;
@@ -76,22 +79,11 @@ public class EstadiaBean implements Serializable{
 	}
 
 	public List<Estadia> getReservasAtuais() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpServletRequest request = (HttpServletRequest) context
-				.getExternalContext().getRequest();
-		HttpSession httpSession = request.getSession(true);
-		Usuario user = (Usuario) httpSession.getAttribute("usuario");
 		Map<String, Object> params = new HashMap<String, Object>();
-		if (user.isAdmin()) {
-			params.put("dataHoje", CalendarUtil.retornaDiaDeHoje());
-			params.put("dataFimSemana", CalendarUtil.aumentaDias(
-					CalendarUtil.retornaDiaDeHoje(), 7));
-			return new DAO<Estadia>(Estadia.class).findListResults(
-					"Estadia.findReservasAtuais", params);
-		}
-		params.put("usuario.id", user.getId());
-		return new DAO<Estadia>(Estadia.class).findListResults(
-				"Estadia.findByUser", params);
+		params.put("dataHoje", CalendarUtil.retornaDiaDeHoje());
+		params.put("dataFimSemana",	CalendarUtil.aumentaDias(CalendarUtil.retornaDiaDeHoje(), 7));
+		return new DAO<Estadia>(Estadia.class).findListResults("Estadia.findReservasAtuais", params);
+
 	}
 
 	public List<Estadia> getOcupacoesAtuais() {
@@ -148,20 +140,20 @@ public class EstadiaBean implements Serializable{
 			Usuario user = (Usuario) httpSession.getAttribute("usuario");
 
 			user = new DAO<Usuario>(Usuario.class).buscaPorId(user.getId());
+			Calendar inicioCast = this.estadia.getDataInicio();
 			this.estadia.setUsuario(user);
 			this.estadia.setDataFim(CalendarUtil.aumentaDias(
-					this.estadia.getDataInicio(), this.getNumeroDias()));
+					inicioCast, this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.RESERVADO);
 			this.estadia.setIsAtivo(false);
-			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
-					.getId());
+			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto.getId());
 			this.estadia.setQuarto(q);
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
 			this.estadia = new Estadia();
 			selectQuarto = new Quarto();
 
 			categoriaId = 0;
-			estadia.setDataInicio(Calendar.getInstance());
+			this.estadia.setDataInicio(null);
 			quartos = new LinkedList<Quarto>();
 		} catch (Exception e) {
 			System.out.println("Deus nos acudaaaaaa!!!!!!");
@@ -171,7 +163,7 @@ public class EstadiaBean implements Serializable{
 		renderizarQuartosDisponiveis = false;
 		return "relatorioReservasUsuario";
 	}
-	
+
 	public void gravarUsuario(ActionEvent ev) {
 		Role role = new DAO<Role>(Role.class).buscaPorId(1);
 		this.usuario.setRole(role);
@@ -179,12 +171,12 @@ public class EstadiaBean implements Serializable{
 		FacesContext fcCtxt = FacesContext.getCurrentInstance();
 		FacesMessage mensagem = new FacesMessage();
 
-        mensagem.setSummary("Usuário Cadastrado: " + usuario.getLogin());
-        mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
+		mensagem.setSummary("Usuário Cadastrado: " + usuario.getLogin());
+		mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
 
 		fcCtxt.addMessage(null, mensagem);
 	}
-	
+
 	public String gravarCheckin() {
 		try {
 			this.estadia.setUsuario(usuario);
@@ -196,7 +188,7 @@ public class EstadiaBean implements Serializable{
 					.getId());
 			this.estadia.setQuarto(q);
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
-			
+
 			this.estadia = new Estadia();
 			this.usuario = new Usuario();
 			selectQuarto = new Quarto();
@@ -210,7 +202,7 @@ public class EstadiaBean implements Serializable{
 		}
 
 		renderizarQuartosDisponiveis = false;
-		return "";
+		return "relatorioReservasAtuais";
 	}
 
 	public void validaDataInicio(FacesContext context, UIComponent component,
@@ -218,10 +210,11 @@ public class EstadiaBean implements Serializable{
 
 		Date dataInicio = (Date) value;
 
-		Date hoje = Calendar.getInstance().getTime();
-
+		Date hoje = (Date) Calendar.getInstance().getTime();
 		if (hoje.before(dataInicio)) {
-			// this.reserva.setDataInicio((Calendar) value);
+			Calendar c = Calendar.getInstance();
+			c.setTime(dataInicio);
+			this.estadia.setDataInicio(c);
 		} else {
 			throw new ValidatorException(new FacesMessage(
 					"Data inicial eh menor ou igual a hoje"));
@@ -280,33 +273,34 @@ public class EstadiaBean implements Serializable{
 		estadia.setDataInicio(Calendar.getInstance());
 		quartos = new LinkedList<Quarto>();
 	}
-	
-	public void escolherUsuario(){
+
+	public void escolherUsuario() {
 		FacesContext fcCtxt = FacesContext.getCurrentInstance();
 		FacesMessage mensagem = new FacesMessage();
 
-        mensagem.setSummary("Usuário Escolhido: " + usuario.getLogin());
-        mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
+		mensagem.setSummary("Usuário Escolhido: " + usuario.getLogin());
+		mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
 
 		fcCtxt.addMessage(null, mensagem);
 	}
-	
-	public void escolherQuarto(){
+
+	public void escolherQuarto() {
 		FacesContext fcCtxt = FacesContext.getCurrentInstance();
 		FacesMessage mensagem = new FacesMessage();
 
-        mensagem.setSummary("Quarto Escolhido: " + selectQuarto.getNumero() + " R$" + selectQuarto.getCategoria().getValor());
-        mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
+		mensagem.setSummary("Quarto Escolhido: " + selectQuarto.getNumero()
+				+ " R$" + selectQuarto.getCategoria().getValor());
+		mensagem.setSeverity(FacesMessage.SEVERITY_INFO);
 
 		fcCtxt.addMessage(null, mensagem);
 	}
-	
+
 	public String prepararCadastroUsuario() {
 		usuario = new Usuario();
 		cadastroPesquisaUsuario = true;
-		return "" ;
+		return "";
 	}
-	
+
 	public List<Usuario> getUsuarios() {
 		return new DAO<Usuario>(Usuario.class).listaTodos();
 	}
@@ -372,13 +366,13 @@ public class EstadiaBean implements Serializable{
 		return "relatorioOcupacoes";
 
 	}
-	
+
 	public String excluiReserva() {
 		new DAO<Estadia>(Estadia.class).remove(this.estadia);
 		return "relatorioReservasUsuario";
 
 	}
-	
+
 	public String liberaOcupacaoEmail() throws EmailException {
 		MailUtil mu = new MailUtil();
 		mu.enviaEmailSimples(this.estadia);
@@ -395,14 +389,11 @@ public class EstadiaBean implements Serializable{
 	}
 
 	public String onFlowProcess(FlowEvent event) {
-
-		
-		
 		if (skip) {
-			skip = false; // reset in case user goes back
+			skip = false;
 			return "confirm";
 		} else {
-			if(event.getOldStep().equals("cadastro")){
+			if (event.getOldStep().equals("cadastro")) {
 				this.estadia = new Estadia();
 				selectQuarto = new Quarto();
 				renderizarQuartosDisponiveis = false;
