@@ -11,8 +11,8 @@
 
 	<ui:define name="conteudo">
 
-	<p:fieldset legend="Relatorio de Reservas">
-			<p:dataTable value="#{estadiaBean.reservas}" var="reserva"
+	<p:fieldset legend="Relatorio de Reservas Canceladas">
+			<p:dataTable value="#{estadiaBean.reservasCanceladas}" var="reserva"
 				paginator="true" rows="4">
 				<p:column>
 					<f:facet name="header">Nome</f:facet>
@@ -51,10 +51,6 @@
 				<p:column>
 					<f:facet name="header">Cama Extra</f:facet>
 					<h:outputText value="#{reserva.camaExtra}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Tipo</f:facet>
-					<h:outputText value="#{reserva.estadiaStatus}" />
 				</p:column>
 			</p:dataTable>
 		</p:fieldset>

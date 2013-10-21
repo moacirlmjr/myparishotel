@@ -132,6 +132,11 @@ public class EstadiaBean implements Serializable {
 		return new DAO<Estadia>(Estadia.class)
 				.findListResults("Estadia.findReservas");
 	}
+	
+	public List<Estadia> getReservasCanceladas() {
+		return new DAO<Estadia>(Estadia.class)
+				.findListResults("Estadia.findReservasCanceladas");
+	}
 
 	public String gravarReserva() {
 		try {
@@ -365,11 +370,17 @@ public class EstadiaBean implements Serializable {
 		return "relatorioOcupacoesAtuais";
 
 	}
+	
+	public String cancelaReserva() {
+		this.estadia.setQuartoStatus(EstadiaStatus.CANCELADO);
+		new DAO<Estadia>(Estadia.class).atualiza(this.estadia);
+		return "relatorioReservasCanceladas";
+
+	}
 
 	public String liberaOcupacao() {
 		this.estadia.setQuartoStatus(EstadiaStatus.DESOCUPADO);
 		new DAO<Estadia>(Estadia.class).atualiza(this.estadia);
-		this.estadia = new Estadia();
 		return "relatorioOcupacoes";
 
 	}
@@ -378,7 +389,6 @@ public class EstadiaBean implements Serializable {
 		MailUtil mu = new MailUtil();
 		mu.enviaEmailSimples(this.estadia);
 		liberaOcupacao();
-		this.estadia=new Estadia();
 		return "relatorioOcupacoes";
 		
 	}
