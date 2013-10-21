@@ -15,7 +15,7 @@
 		<p:fieldset legend="Relatorio de Ocupacoes Atuais">
 			<h:form id="formPrincipal">
 				<p:dataTable value="#{estadiaBean.ocupacoesAtuais}" var="estadia"
-					paginator="true" rows="4">
+					paginator="true" id="ocupacoes" rows="4">
 					<p:column>
 						<f:facet name="header">Nome</f:facet>
 						<h:outputText value="#{estadia.usuario.nome}" />
@@ -62,16 +62,20 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">Ação</f:facet>
-						<p:commandButton value="Liberar Quarto" ajax="false"
+						<p:commandButton value="liberar" title="Liberar" ajax="true"
+							update=":formLiberar:Liberar" oncomplete="dialogLiberar.show()"
+							immediate="true">							
+						</p:commandButton>
+						<p:commandButton value="Liberar" ajax="true"
 							action="#{estadiaBean.liberaOcupacao}">
 							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
 								value="#{estadia}" />
 						</p:commandButton>
-						<p:commandButton value="liberar com Email" title="Liberar"
-							update=":formLiberar:Liberar" oncomplete="dialogLiberar.show()"
-							immediate="true">
+
+						<p:commandButton value="Liberar/Enviar Email" ajax="true"
+							action="#{estadiaBean.liberaOcupacaoEmail}">
 							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
-								value="#{estadia}" />
+								value="#{estadia}" />							
 						</p:commandButton>
 					</p:column>
 
@@ -98,9 +102,15 @@
 						</h:outputText>
 						<h:outputLabel value="Total:  " />
 						<h:outputText value="#{estadia.valorTotal}" />
+						
+						<p:commandButton value="Liberar" ajax="true"
+							action="#{estadiaBean.liberaOcupacao}" immediate="true">
+						</p:commandButton>
 
-						<p:commandButton value="Enviar Email" ajax="false"
-							action="#{estadiaBean.liberaOcupacaoEmail}">							
+						<p:commandButton value="Liberar/Enviar Email" ajax="true"
+							action="#{estadiaBean.liberaOcupacaoEmail}" immediate="true">
+							<f:setPropertyActionListener target="#{estadiaBean.estadia}"
+								value="#{estadia}" />							
 						</p:commandButton>
 
 					</p:panelGrid>

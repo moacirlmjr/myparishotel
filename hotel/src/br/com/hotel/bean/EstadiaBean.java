@@ -81,8 +81,10 @@ public class EstadiaBean implements Serializable {
 	public List<Estadia> getReservasAtuais() {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("dataHoje", CalendarUtil.retornaDiaDeHoje());
-		params.put("dataFimSemana",	CalendarUtil.aumentaDias(CalendarUtil.retornaDiaDeHoje(), 7));
-		return new DAO<Estadia>(Estadia.class).findListResults("Estadia.findReservasAtuais", params);
+		params.put("dataFimSemana",
+				CalendarUtil.aumentaDias(CalendarUtil.retornaDiaDeHoje(), 7));
+		return new DAO<Estadia>(Estadia.class).findListResults(
+				"Estadia.findReservasAtuais", params);
 
 	}
 
@@ -140,20 +142,23 @@ public class EstadiaBean implements Serializable {
 			Usuario user = (Usuario) httpSession.getAttribute("usuario");
 
 			user = new DAO<Usuario>(Usuario.class).buscaPorId(user.getId());
-			Calendar inicioCast = this.estadia.getDataInicio();
+			Calendar inicioCast = Calendar.getInstance();
+			inicioCast.setTimeInMillis(this.estadia.getDataInicio()
+					.getTimeInMillis());
 			this.estadia.setUsuario(user);
-			this.estadia.setDataFim(CalendarUtil.aumentaDias(
-					inicioCast, this.getNumeroDias()));
+			this.estadia.setDataFim(CalendarUtil.aumentaDias(inicioCast,
+					this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.RESERVADO);
 			this.estadia.setIsAtivo(false);
-			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto.getId());
+			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
+					.getId());
 			this.estadia.setQuarto(q);
 			new DAO<Estadia>(Estadia.class).adiciona(this.estadia);
 			this.estadia = new Estadia();
 			selectQuarto = new Quarto();
 
 			categoriaId = 0;
-			this.estadia.setDataInicio(null);
+			this.estadia.setDataInicio(Calendar.getInstance());
 			quartos = new LinkedList<Quarto>();
 		} catch (Exception e) {
 			System.out.println("Deus nos acudaaaaaa!!!!!!");
@@ -213,7 +218,8 @@ public class EstadiaBean implements Serializable {
 		Date hoje = (Date) Calendar.getInstance().getTime();
 		if (hoje.before(dataInicio)) {
 			Calendar c = Calendar.getInstance();
-			c.setTime(dataInicio);
+			c.setTimeInMillis(dataInicio.getTime());
+			c.add(Calendar.DAY_OF_YEAR, 1);
 			this.estadia.setDataInicio(c);
 		} else {
 			throw new ValidatorException(new FacesMessage(
@@ -363,22 +369,26 @@ public class EstadiaBean implements Serializable {
 	public String liberaOcupacao() {
 		this.estadia.setQuartoStatus(EstadiaStatus.DESOCUPADO);
 		new DAO<Estadia>(Estadia.class).atualiza(this.estadia);
+		this.estadia = new Estadia();
 		return "relatorioOcupacoes";
-
-	}
-
-	public String excluiReserva() {
-		new DAO<Estadia>(Estadia.class).remove(this.estadia);
-		return "relatorioReservasUsuario";
 
 	}
 
 	public String liberaOcupacaoEmail() throws EmailException {
 		MailUtil mu = new MailUtil();
 		mu.enviaEmailSimples(this.estadia);
+		liberaOcupacao();
+		this.estadia=new Estadia();
 		return "relatorioOcupacoes";
+		
+	}
+	
+	public String excluiReserva() {
+		new DAO<Estadia>(Estadia.class).remove(this.estadia);
+		return "relatorioReservasUsuario";
 
 	}
+
 
 	public boolean isSkip() {
 		return skip;
