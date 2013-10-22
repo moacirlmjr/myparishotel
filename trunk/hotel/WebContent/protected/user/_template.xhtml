@@ -23,14 +23,22 @@
 					<p:menuitem value="Minhas Reservas"
 						action="relatorioReservasUsuario" />
 				</p:submenu>
+				
 				<p:submenu label="Ocupações">
 					<p:menuitem value="Minhas Ocupações"
 						action="relatorioOcupacoesUsuario" />
 				</p:submenu>
-				<p:submenu label="Sair">
-				<p:menuitem value="Finalizar sessão"
-					action="#{loginBean.logOut}" />
+
+				<p:submenu label="Meus dados">
+					<p:menuitem value="Verificar meus dados"
+						action="dadosDoUsuario" />
 				</p:submenu>
+				
+				<p:submenu label="Sair">
+					<p:menuitem value="Finalizar sessão" action="#{loginBean.logOut}" />
+				</p:submenu>
+				
+				
 
 			</p:menubar>
 		</h:form>

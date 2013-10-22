@@ -16,7 +16,7 @@ import br.com.hotel.modelo.Usuario;
 @RequestScoped
 public class UsuarioBean {
 
-	private Usuario usuario = new Usuario();
+	private Usuario usuario;
 	private Integer roleID = 1;
 
 	public Usuario getUsuario() {
@@ -63,6 +63,21 @@ public class UsuarioBean {
 				.getExternalContext().getSession(true);
 		ss.setAttribute("usuario", usuario);
 		return "usuario.xhtml?faces-redirect=true";
+	}
+	
+	public Usuario getUsuarioLogado(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) context
+				.getExternalContext().getRequest();
+		Usuario user = (Usuario) request.getSession().getAttribute("usuario");
+		this.usuario = user;
+		return this.usuario;
+	}
+	
+	public String atualizaDados(){
+		new DAO<Usuario>(Usuario.class).atualiza(this.usuario);
+		this.usuario = new Usuario();
+		return "dadosDoUsuario";
 	}
 
 }

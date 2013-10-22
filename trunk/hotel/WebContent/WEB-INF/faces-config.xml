@@ -58,6 +58,11 @@
 			<to-view-id>/protected/user/relatorios/relReservasUsuario.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>dadosDoUsuario</from-outcome>
+			<to-view-id>/protected/user/relatorios/relDadosUser.jsf</to-view-id>
+			<redirect />
+		</navigation-case>
 
 
 		<navigation-case>
