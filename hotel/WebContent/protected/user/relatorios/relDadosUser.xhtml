@@ -12,45 +12,69 @@
 	<ui:define name="conteudo">
 
 		<p:fieldset legend="Meus Dados">
-			<p:dataTable value="#{usuarioBean.usuario}" var="usuario"
-				paginator="true" rows="10">
-				<h:outputLabel value="Nome:" for="nome" />
-				<p:inputText id="nome" value="#{usuario.nome}"
-					required="true" requiredMessage="Nome Obrigatório">
-					<f:validateLength minimum="5" />
-				</p:inputText>
+			<h:form id="formPrincipal">
+				<p:dataTable var="usuario" value="#{usuarioBean.usuarioLogado}"
+					id="tabelaDados">
+					<f:facet name="header">Seus Dados Cadastrados</f:facet>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{usuario.nome}" />
+					</p:column>
+
+					<p:column headerText="Fone">
+						<h:outputText value="#{usuario.telefone}" />
+					</p:column>
+
+					<p:column headerText="Email">
+						<h:outputText value="#{usuario.email}" />
+					</p:column>
+
+					<p:column headerText="Login">
+						<h:outputText value="#{usuario.login}" />
+					</p:column>
+
+					<p:column headerText="Senha">
+						<h:outputText value="#{usuario.senha}" />
+					</p:column>
 
 
-				<h:outputLabel value="Telefone: " for="fone" />
-				<p:inputText id="fone" value="#{usuario.telefone}"
-					required="true" requiredMessage="Telefone Obrigatório">
-					<f:validateLength minimum="8" maximum="9" />
-				</p:inputText>
+					<p:column headerText="Ações">
+						<p:commandButton value="Alterar" update=":formAlterar:Alterar"
+							oncomplete="dialogAlterar.show()" immediate="true">
+							<f:setPropertyActionListener target="#{usuarioBean.usuario}"
+								value="#{usuario}" />
+						</p:commandButton>
+					</p:column>
 
-				<h:outputLabel value="Email: " for="mail" />
-				<p:inputText id="mail" value="#{usuario.email}"
-					required="true" requiredMessage="Email Obrigatório">
-					<f:validateLength minimum="5" maximum="90" />
-				</p:inputText>
+				</p:dataTable>
+			</h:form>
 
-				<h:outputLabel value="Login: " for="login" />
-				<p:inputText id="login" value="#{usuario.login}"
-					required="true" requiredMessage="Login Obrigatório">
-					<f:validateLength minimum="5" maximum="14" />
-				</p:inputText>
 
-				<h:outputLabel value="Senha: " for="senha" />
-				<p:password id="senha" value="#{usuario.senha}"
-					required="true" requiredMessage="Senha Obrigatório">
-					<f:validateLength minimum="5" maximum="14" />
-				</p:password>
-				
-				<f:facet name="header">Ação</f:facet>
-				<p:commandButton id="atualizar" value="Atualizar"
-					actionListener="#{usuarioBean.atualizar()}">
-				</p:commandButton>
-				</p:column>
-			</p:dataTable>
+
+			<h:form id="formAlterar">
+				<p:dialog header="Alterar" widgetVar="dialogAlterar" modal="true"
+					id="Alterar">
+					<p:panelGrid id="panelAlterar" columns="2">
+						<h:outputText value="Nome:" />
+						<p:inputText value="#{usuario.nome}" />
+						<h:outputText value="Fone:" />
+						<p:inputText value="#{usuario.telefone}" />
+						<h:outputText value="Email" />
+						<p:inputText value="#{usuario.email}" />
+						<h:outputText value="Login" />
+						<p:inputText value="#{usuario.login}" />
+						<h:outputText value="Senha" />
+						<p:inputText value="#{usuario.senha}" />
+					</p:panelGrid>
+					<p:commandButton value="Salvar"
+						action="#{usuarioBean.atualizaDados}"
+						update=":formPrincipal:tabelaDados"
+						oncomplete="dialogAlterar.hide()">
+						<f:setPropertyActionListener target="#{usuarioBean.usuario}"
+							value="#{usuario}" />
+					</p:commandButton>
+				</p:dialog>
+			</h:form>
 		</p:fieldset>
 
 	</ui:define>
