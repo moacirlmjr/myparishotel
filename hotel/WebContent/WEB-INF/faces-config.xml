@@ -76,7 +76,7 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>cadastroReserva</from-outcome>
+			<from-outcome>cadastroOcupacao</from-outcome>
 			<to-view-id>/protected/admin/cadastros/checkInUser.jsf</to-view-id>
 			<redirect />
 		</navigation-case>
