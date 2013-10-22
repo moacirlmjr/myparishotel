@@ -132,7 +132,7 @@ public class EstadiaBean implements Serializable {
 		return new DAO<Estadia>(Estadia.class)
 				.findListResults("Estadia.findReservas");
 	}
-	
+
 	public List<Estadia> getReservasCanceladas() {
 		return new DAO<Estadia>(Estadia.class)
 				.findListResults("Estadia.findReservasCanceladas");
@@ -190,8 +190,11 @@ public class EstadiaBean implements Serializable {
 	public String gravarCheckin() {
 		try {
 			this.estadia.setUsuario(usuario);
-			this.estadia.setDataFim(CalendarUtil.aumentaDias(
-					this.estadia.getDataInicio(), this.getNumeroDias()));
+			Calendar inicioCast = Calendar.getInstance();
+			inicioCast.setTimeInMillis(this.estadia.getDataInicio()
+					.getTimeInMillis());
+			this.estadia.setDataFim(CalendarUtil.aumentaDias(inicioCast,
+					this.getNumeroDias()));
 			this.estadia.setQuartoStatus(EstadiaStatus.OCUPADO);
 			this.estadia.setIsAtivo(true);
 			Quarto q = new DAO<Quarto>(Quarto.class).buscaPorId(selectQuarto
@@ -212,7 +215,7 @@ public class EstadiaBean implements Serializable {
 		}
 
 		renderizarQuartosDisponiveis = false;
-		return "relatorioReservasAtuais";
+		return "relatorioOcupacoesAtuais";
 	}
 
 	public void validaDataInicio(FacesContext context, UIComponent component,
@@ -370,7 +373,7 @@ public class EstadiaBean implements Serializable {
 		return "relatorioOcupacoesAtuais";
 
 	}
-	
+
 	public String cancelaReserva() {
 		this.estadia.setQuartoStatus(EstadiaStatus.CANCELADO);
 		new DAO<Estadia>(Estadia.class).atualiza(this.estadia);
@@ -390,15 +393,14 @@ public class EstadiaBean implements Serializable {
 		mu.enviaEmailSimples(this.estadia);
 		liberaOcupacao();
 		return "relatorioOcupacoes";
-		
+
 	}
-	
+
 	public String excluiReserva() {
 		new DAO<Estadia>(Estadia.class).remove(this.estadia);
 		return "relatorioReservasUsuario";
 
 	}
-
 
 	public boolean isSkip() {
 		return skip;
