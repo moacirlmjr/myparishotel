@@ -41,7 +41,7 @@ public class QuartoBean {
 
 		new DAO<Quarto>(Quarto.class).adiciona(this.quarto);
 		this.quarto = new Quarto();
-		return "quarto?faces-redirect=true";
+		return "relatorioQuartos";
 	}
 
 	public List<Categoria> getListaCategorias() {
