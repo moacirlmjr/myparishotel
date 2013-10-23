@@ -16,7 +16,7 @@ import br.com.hotel.modelo.Usuario;
 @RequestScoped
 public class UsuarioBean {
 
-	private Usuario usuario;
+	private Usuario usuario = new Usuario();
 	private Integer roleID = 1;
 
 	public Usuario getUsuario() {
@@ -50,12 +50,22 @@ public class UsuarioBean {
 				.getExternalContext().getRequest();
 		HttpSession httpSession = request.getSession(true);
 		Usuario user = (Usuario) httpSession.getAttribute("usuario");
-		if(user.isAdmin()){
-			return "relatorioUsuarios";			
-		}else{
+		if (user.isAdmin()) {
+			return "relatorioUsuarios";
+		} else {
 			return "login";
 		}
-		
+
+	}
+
+	public String gravarUsuario() {
+		System.out.println("Gravando usuario " + this.usuario.getNome());
+		Role role = new DAO<Role>(Role.class).buscaPorId(roleID);
+		this.usuario.setRole(role);
+		new DAO<Usuario>(Usuario.class).adiciona(this.usuario);
+		this.usuario = new Usuario();
+		return "login";
+
 	}
 
 	public String formUsuario() {
@@ -64,8 +74,8 @@ public class UsuarioBean {
 		ss.setAttribute("usuario", usuario);
 		return "usuario.xhtml?faces-redirect=true";
 	}
-	
-	public Usuario getUsuarioLogado(){
+
+	public Usuario getUsuarioLogado() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context
 				.getExternalContext().getRequest();
@@ -73,8 +83,8 @@ public class UsuarioBean {
 		this.usuario = user;
 		return this.usuario;
 	}
-	
-	public String atualizaDados(){
+
+	public String atualizaDados() {
 		new DAO<Usuario>(Usuario.class).atualiza(this.usuario);
 		this.usuario = new Usuario();
 		return "dadosDoUsuario";

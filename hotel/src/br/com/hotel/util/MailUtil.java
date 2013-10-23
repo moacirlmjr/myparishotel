@@ -9,7 +9,7 @@ import br.com.hotel.modelo.Estadia;
 
 public class MailUtil {
 
-	private static final String ACOOUNT_USER = "danyllowagneralbuquerque";
+	private static final String ACOOUNT_USER = "myparishotel2013";
 	private static final String MAIL_USER = "myparishotel2013@gmail.com";
 	private static final String MAIL_PWD = "puchostel";
 	private static final String MAIL_TITLE = "Relatório de Ocupacao";
