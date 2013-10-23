@@ -15,20 +15,36 @@
 			<p:dataTable value="#{financasBean.fto}" var="fto"
 				paginator="true" rows="4">
 				<p:column>
-					<f:facet name="header">Total Pessoas</f:facet>
+					<f:facet name="header">Pessoas</f:facet>
 					<h:outputText value="#{fto.totalPessoas}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header">Total Reservas</f:facet>
+					<f:facet name="header">Pessoas semana</f:facet>
+					<h:outputText value="#{fto.totalPessoasAtuais}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Reservas</f:facet>
 					<h:outputText value="#{fto.totalReservas}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header">Total Ocupacoes</f:facet>
+					<f:facet name="header">Reservas semana</f:facet>
+					<h:outputText value="#{fto.totalReservasAtuais}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Ocupacoes</f:facet>
 					<h:outputText value="#{fto.totalHospedagens}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header">Total Recebido</f:facet>
+					<f:facet name="header">Ocupacoes Atuais</f:facet>
+					<h:outputText value="#{fto.totalHospedagensAtuais}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Recebido</f:facet>
 					<h:outputText value="#{fto.totalRecebido}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">Recebido semana</f:facet>
+					<h:outputText value="#{fto.totalRecebidoAtual}" />
 				</p:column>
 				
 			</p:dataTable>
