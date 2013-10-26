@@ -20,31 +20,39 @@
 			<p:menubar>
 				<p:submenu label="Cadastros">
 					<p:menuitem value="Usuario" action="cadastroUsuario" />
-					<p:menuitem value="Categoria de Quarto" action="cadastroCategoriaQuarto" />
+					<p:menuitem value="Categoria de Quarto"
+						action="cadastroCategoriaQuarto" />
 					<p:menuitem value="Quartos" action="cadastroQuarto" />
 					<p:menuitem value="Ocupação" action="cadastroOcupacao" />
 				</p:submenu>
-					<p:submenu label="Reservas">
-						<p:menuitem value="Reservas atuais" action="relatorioReservasAtuais" />
-						<p:menuitem value="Reservas Canceladas" action="relatorioReservasCanceladas" />
-						<p:menuitem value="Todas as Reservas" action="relatorioReservas" />
-					</p:submenu>
-					<p:submenu label="Ocupacoes">
-						<p:menuitem value="Ocupações atuais" action="relatorioOcupacoesAtuais" />
-						<p:menuitem value="Todas as Ocupações" action="relatorioOcupacoes" />
-					</p:submenu>
-					<p:submenu label="Finanças">
-						<p:menuitem value="Balanço Financeiro" action="relatorioFinancas" />
-					</p:submenu>
+				<p:submenu label="Reservas">
+					<p:menuitem value="Reservas atuais"
+						action="relatorioReservasAtuais" />
+					<p:menuitem value="Reservas Canceladas"
+						action="relatorioReservasCanceladas" />
+					<p:menuitem value="Todas as Reservas" action="relatorioReservas" />
+				</p:submenu>
+				<p:submenu label="Ocupacoes">
+					<p:menuitem value="Ocupações atuais"
+						action="relatorioOcupacoesAtuais" />
+					<p:menuitem value="Todas as Ocupações" action="relatorioOcupacoes" />
+				</p:submenu>
+				<p:submenu label="Finanças">
+					<p:menuitem value="Balanço Financeiro" action="relatorioFinancas" />
+				</p:submenu>
 				<p:submenu label="Registros">
 					<p:menuitem value="Usuarios" action="relatorioUsuarios" />
 					<p:menuitem value="Quartos" action="relatorioQuartos" />
 					<p:menuitem value="Categorias" action="relatorioCategoriaQuarto" />
 				</p:submenu>
 				<p:submenu label="Sair">
-				<p:menuitem value="Finalizar sessão"
-					action="#{loginBean.logOut}" />
+					<p:menuitem value="Finalizar sessão" action="#{loginBean.logOut}" />
 				</p:submenu>
+				<b>
+				<p:menuitem style="position: absolute; right: 20px;color:red; font-weight:bold"
+					value="olá, #{loginBean.usuarioLogado.login}" />
+					</b>
+
 			</p:menubar>
 		</h:form>
 

@@ -16,15 +16,19 @@ import br.com.hotel.util.JSFMessageUtil;
 @SessionScoped
 @ManagedBean
 public class LoginBean {
-	
-	private Usuario usuario;
 
-	public LoginBean() {
-		usuario = new Usuario();
+	private Usuario usuario = new Usuario();
+	
+	public Usuario getUsuario(){
+		return usuario;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Usuario getUsuarioLogado() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext()
+				.getSession(true);
+		Usuario u = (Usuario) session.getAttribute("usuario");
+		return u;
 	}
 
 	public void setUsuario(Usuario usuario) {
@@ -32,10 +36,11 @@ public class LoginBean {
 	}
 
 	public String logOut() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();    
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);        
-		session.removeAttribute("usuario");	
-		session.invalidate();    
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext()
+				.getSession(false);
+		session.removeAttribute("usuario");
+		session.invalidate();
 		return "logout";
 	}
 
@@ -66,13 +71,14 @@ public class LoginBean {
 		return null;
 
 	}
-	
-	 public Usuario findUserByLogin(String login){
-	        Map<String, Object> parameters = new HashMap<String, Object>();
-	        parameters.put("login", login);     
-	        Usuario user = new DAO<Usuario>(Usuario.class).findOneResult(Usuario.FIND_BY_LOGIN, parameters);
-	        System.out.println();
-	        return user;
-	    }
+
+	public Usuario findUserByLogin(String login) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("login", login);
+		Usuario user = new DAO<Usuario>(Usuario.class).findOneResult(
+				Usuario.FIND_BY_LOGIN, parameters);
+		System.out.println();
+		return user;
+	}
 
 }
