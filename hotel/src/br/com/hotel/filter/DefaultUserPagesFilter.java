@@ -23,8 +23,13 @@ public class DefaultUserPagesFilter extends AbstractFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		Usuario user = (Usuario) req.getSession(true).getAttribute("usuario");
+		if (user == null){
+			accessDenied(request, response, req);
+			throw new SecurityException();	
+			
+		}
 
-		if((!user.isUser() && !user.isAdmin()) || user == null){
+		if((!user.isUser() && !user.isAdmin())){
 			accessDenied(request, response, req);
 			throw new SecurityException();
 		}
