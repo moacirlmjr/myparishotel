@@ -83,7 +83,7 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">Ação</f:facet>
-						<p:commandButton value="Escolher" ajax="false"
+						<p:commandButton value="Escolher" immediate="true" ajax="false"
 							action="#{estadiaBean.gravarReserva}">
 							<f:setPropertyActionListener target="#{estadiaBean.selectQuarto}" value="#{quarto}" />
 						</p:commandButton>
